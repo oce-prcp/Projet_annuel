@@ -1,13 +1,13 @@
 CREATE DATABASE IF NOT EXISTS Annuel;
 USE Annuel;
 
-DROP TABLE IF EXISTS `Invoices`;
-DROP TABLE IF EXISTS `Societies`;
-DROP TABLE IF EXISTS `Subscriptions`;
-DROP TABLE IF EXISTS `Users`;
-DROP TABLE IF EXISTS `Files`;
+DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `Subscription`;
+DROP TABLE IF EXISTS `File`;
+DROP TABLE IF EXISTS `Invoice`;
+DROP TABLE IF EXISTS `Society`;
 
-CREATE TABLE Users (
+CREATE TABLE User (
   user_id INT PRIMARY KEY AUTO_INCREMENT,
   user_name VARCHAR(50),
   user_first_name VARCHAR(50),
@@ -18,7 +18,7 @@ CREATE TABLE Users (
   user_role ENUM('admin','customer')
 )
 
-CREATE TABLE Subscriptions (
+CREATE TABLE Subscription (
   subscription_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
   subscription_storage_space DECIMAL(10,2),
@@ -28,7 +28,7 @@ CREATE TABLE Subscriptions (
 )
 
 
-CREATE TABLE Files (
+CREATE TABLE File (
   file_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
   file_name VARCHAR(200),
@@ -40,7 +40,7 @@ CREATE TABLE Files (
 )
 
 
-CREATE TABLE Invoices (
+CREATE TABLE Invoice (
   invoice_id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT,
   subscription_id INT,
@@ -54,7 +54,7 @@ CREATE TABLE Invoices (
   FOREIGN KEY (subscription_id) REFERENCES Subscriptions(subscription_id)
 )
 
-CREATE TABLE Societies (
+CREATE TABLE Society (
   society_id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT,
   society_name varchar(100),
