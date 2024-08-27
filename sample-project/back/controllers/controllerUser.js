@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken')
 exports.CreateUser = async (req, res) => {
     try {
         const { name, firstname, email, phone, password } = req.body;
-        let role = 0;
         if (!name || !firstname || !email || !phone || !password) {
             return res.status(400).json('Tous les champs sont obligatoires');
         }
@@ -16,7 +15,7 @@ exports.CreateUser = async (req, res) => {
             console.log('Un utilisateur avec cet email existe déjà');
             return res.status(400).json(error, 'Un utilisateur avec cet email existe déjà');
         }
-        const existingUserPhone = await User.findOne({ where: { user_tel: phone } });
+        const existingUserPhone = await User.findOne({ where: { user_phone: phone } });
         if (existingUserPhone) {
             console.log('Un utilisateur avec ce numéro de téléphone existe déjà');
             return res.status(401).json(error, 'Un utilisateur avec ce numéro de téléphone existe déjà');
@@ -25,12 +24,13 @@ exports.CreateUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await User.create({
-            user_nom: name,
-            user_prenom: firstname,
+            user_name: name,
+            user_first_name: firstname,
+            user_phone: phone,
             user_email: email,
-            user_pass: hashedPassword,
-            user_tel: phone,
-            user_type: "user",
+            user_storage_space_used: 0,
+            user_password: hashedPassword,
+            user_type: "user"
         });
         console.log('Utilisateur créé avec succès :', user);
         res.status(200).json(user);
@@ -52,7 +52,7 @@ exports.LoginUser = async (req, res) => {
             return res.status(401).json('Utilisateur non trouvé');
         }
 
-        const validPassword = await bcrypt.compare(password, user.user_pass);
+        const validPassword = await bcrypt.compare(password, user.user_password);
         if (!validPassword) {
             console.log('Mot de passe incorrect');
             return res.status(401).json('Mot de passe incorrect');
