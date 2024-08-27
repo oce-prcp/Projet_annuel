@@ -83,7 +83,7 @@ exports.DeleteUser = async (req, res) => {
     }
 }
 
-exports.getUser = async (req, res) => {
+exports.GetUser = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findOne({ where: { user_id: id } });
