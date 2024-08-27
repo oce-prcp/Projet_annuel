@@ -1,7 +1,19 @@
-import '@builder.io/qwik/qwikloader.js'
+import React from 'react';
+import ReactDOM from 'react-dom/client'; // Remarque: on importe maintenant 'react-dom/client'
+import App from './app';
 
-import { render } from '@builder.io/qwik'
-import { App } from './app.jsx'
-import './index.css'
+// Cherchez l'élément dans le DOM où vous voulez monter votre application
+const rootElement = document.getElementById('root');
 
-render(document.getElementById('app'), <App />)
+// Assurez-vous que cet élément existe dans votre index.html
+if (rootElement) {
+    // Utilisez la nouvelle méthode createRoot
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    );
+} else {
+    console.error("Aucun élément DOM trouvé avec l'id 'root'");
+}
