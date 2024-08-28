@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+
 .circle-icon {
     width: 80px;
     height: 80px;
@@ -24,4 +27,30 @@ body, html {
 
 .navbar {
     border-bottom: 1px solid #e0e0e0; /* Couleur et épaisseur du trait */
+}
+
+.navbar-nav {
+    flex: 1;
+    justify-content: flex-start;
+}
+
+.btn-outline-light {
+    margin-left: auto;
+    border: 1px solid white;
+}
+
+.navbar-collapse {
+    flex-grow: 0;
+}
+
+/* Animation de transition pour faire apparaître les cartes de bas en haut */
+.fade-in {
+    opacity: 0;
+    transform: translateY(50px); /* Commence en bas */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0); /* Se remet en place */
 }
