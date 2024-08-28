@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 exports.CreateUser = async (req, res) => {
     try {
-        const { name, firstname, email, phone, password } = req.body;
+        const { name, firstname, email, phone, password, adress } = req.body;
         if (!name || !firstname || !email || !phone || !password) {
             return res.status(400).json('Tous les champs sont obligatoires');
         }
@@ -30,6 +30,7 @@ exports.CreateUser = async (req, res) => {
             user_email: email,
             user_storage_space_used: 0,
             user_password: hashedPassword,
+            user_adress: adress,
             user_type: "user"
         });
         console.log('Utilisateur créé avec succès :', user);

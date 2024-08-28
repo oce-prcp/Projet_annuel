@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './SubscriptionPage.css';
 import { Container, Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-import {HiOutlineDownload, HiOutlinePrinter} from 'react-icons/hi'
+import { HiOutlineDownload } from 'react-icons/hi'
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Invoice from "../components/InvoicePDF";
 
@@ -42,10 +42,22 @@ const SubscriptionPage = () => {
             console.error('Erreur lors de la mise à jour de l\'abonnement:', error);
             alert('Erreur lors de l\'achat de l\'espace de stockage.');
         }
+        
+        try{
+            const response = await axios.post(
+                'http://localhost:8000/invoice/create',
+                { user_id: userId }
+            );
+            console.log(response.data);
+            alert('Facture créée avec succès.');
+        }catch(error){
+            console.error('Erreur lors de la création de la facture:', error);
+            alert('Erreur lors de la création de la facture.');
+        }
     };
 
     return (
-        <Container className="d-flex flex-column justify-content-center mt-5 mb-5 ">
+        <Container className="d-flex justify-content-center mt-5 mb-5 ">
             <Card style={{ width: '40rem' }} className="p-4">
                 <Form>
                     <h2 className="mt-4">Moyen de payement</h2>
@@ -75,17 +87,15 @@ const SubscriptionPage = () => {
                         Confirmer et acheter de l'espace
                     </Button>
                 </Form>
-            </Card>
-            <div>
-            <PDFDownloadLink document={<Invoice />} fileName='invoice.pdf'>
-            <div className='mt-3'>
-                <HiOutlineDownload size={14}/>
-                <span>Download</span>
-            </div>
+                <PDFDownloadLink document={<Invoice />} fileName='invoice.pdf'>
+                <Button className='mt-3'>
+                    <HiOutlineDownload size={14}/>
+                    <span>Télécharger une facture</span>
+                </Button>
             </PDFDownloadLink>
-            </div>
+            </Card>
+
         </Container>
-        
     );
 };
 

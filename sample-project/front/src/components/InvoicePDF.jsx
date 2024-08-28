@@ -2,13 +2,14 @@ import React, { Fragment } from 'react';
 import { Image, Text, View, Page, Document, StyleSheet } from '@react-pdf/renderer';
 import logo from '../assets/logo_data_save.png';
 
-const Invoice = () => {
+const Invoice = ({ id, address, date, name}) => {
 
     const reciept_data = {
         "id": "642be0b4bbe5d71a5341dfb1",
-        "invoice_no": "20200669",
-        "address": "Adresse à insérer",
-        "date": "24-09-2019",
+        "invoice_no": id,
+        "address": address,
+        "name": name,
+        "date": date,
         "items": [
             {
                 "id": 1,
@@ -82,6 +83,9 @@ const Invoice = () => {
                     <Text style={styles.address}>
                         {reciept_data.address}
                     </Text>
+                    <Text style={styles.address}>
+                        {reciept_data.name}
+                    </Text>
                 </View>
                 <Text style={styles.addressTitle}>{reciept_data.date}</Text>
             </View>
@@ -129,15 +133,21 @@ const Invoice = () => {
     const TableTotal = () => (
         <View style={{ width: '100%', flexDirection: 'row' }}>
             <View style={styles.total}>
-                <Text></Text>
+                <Text>TVA</Text>
             </View>
             <View style={styles.total}>
-                <Text> </Text>
+                <Text>Total hors taxes</Text>
             </View>
             <View style={styles.tbody}>
                 <Text>Total</Text>
             </View>
             <View style={styles.tbody}>
+                <Text>
+                    {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.2).toFixed(2)}
+                </Text>
+                <Text>
+                    {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.74).toFixed(2)}
+                </Text>
                 <Text>
                     {reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0).toFixed(2)}
                 </Text>
