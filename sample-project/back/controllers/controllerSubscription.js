@@ -36,22 +36,24 @@ exports.UpdateSubscription = async (req, res) => {
 
     try {
         const subscription = await Subscription.findOne({ where: { user_id: user_id } });
-
-        // Si la souscription n'existe pas, retourner une erreur
+    
         if (!subscription) {
             return res.status(404).json({ message: 'Souscription non trouvée pour cet utilisateur.' });
         }
 
-        // Mettre à jour le champ storage en ajoutant 20 à sa valeur actuelle
-        subscription.subscription_storage_space += 20;
-        subscription.subscription_price += 20;
-
-        await subscription.save();
-
+        await subscription.increment({
+            subscription_storage_space: 20.0000,
+            subscription_price: 20.0000
+        });
+    
+        await subscription.reload();
+    
         res.status(200).json(subscription);
     } catch (error) {
-        res.status(400).json({ error: 'Erreur lors de la mise à jour de la souscription.', details: error });
+        console.error(error);
+        res.status(500).json({ message: 'Une erreur est survenue lors de la mise à jour de la souscription.' });
     }
+    
 };
 
 exports.GetSubscription = async (req, res) => {

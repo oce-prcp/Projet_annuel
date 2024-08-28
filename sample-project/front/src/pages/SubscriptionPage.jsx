@@ -6,27 +6,44 @@ import axios from 'axios';
 
 
 const SubscriptionPage = () => {
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+        // Fonction pour récupérer l'ID utilisateur après le montage du composant
+        const fetchUserId = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/user/getUserId', { withCredentials: true });
+                setUserId(response.data.userId);
+            } catch (error) {
+                console.error('Erreur lors de la récupération de l\'ID utilisateur:', error);
+            }
+        };
+
+        fetchUserId();
+    }, []);
+
+    const handleSubscription = async () => {
+        try {
+            if (!userId) {
+                alert('User ID non trouvé. Veuillez vous connecter à nouveau.');
+                return;
+            }
+
+            const response = await axios.put(
+                'http://localhost:8000/subscription/update',
+                { user_id: userId }
+            );
+            console.log(response.data);
+            alert('Espace de stockage acheté avec succès.');
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour de l\'abonnement:', error);
+            alert('Erreur lors de l\'achat de l\'espace de stockage.');
+        }
+    };
 
     return (
         <Container className="d-flex justify-content-center mt-5 mb-5">
             <Card style={{ width: '40rem' }} className="p-4">
-                <Form>
-                    <h2>Informations Principales</h2>
-                    <Form.Group className="mb-3" controlId="formBasicName">
-                        <Form.Label>Nom*</Form.Label>
-                        <Form.Control type="text" placeholder="No business or company name" />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicAddress">
-                        <Form.Label>Adresse*</Form.Label>
-                        <Form.Control type="text" placeholder="20 Rue Jean-Moulin"/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicPhone">
-                        <Form.Label>Numéro de téléphone*</Form.Label>
-                        <Form.Control type="text" placeholder="+33 xxx xxx xxx" />
-                    </Form.Group>
-                </Form>
-
-                
                 <Form>
                     <h2 className="mt-4">Moyen de payement</h2>
                     <div className="d-flex ">
@@ -51,7 +68,7 @@ const SubscriptionPage = () => {
                         <Form.Label>Nom inscrit sur la carte</Form.Label>
                         <Form.Control type="text" placeholder="John Doe" />
                     </Form.Group>
-                    <Button variant="primary" type="button" className="mt-3">
+                    <Button variant="primary" type="button" className="mt-3" onClick={handleSubscription}>
                         Confirmer et acheter de l'espace
                     </Button>
                 </Form>
