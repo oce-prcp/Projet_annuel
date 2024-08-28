@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './SubscriptionPage.css';
 import { Container, Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import {HiOutlineDownload, HiOutlinePrinter} from 'react-icons/hi'
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Invoice from "../components/InvoicePDF";
 
 
 
@@ -42,7 +45,7 @@ const SubscriptionPage = () => {
     };
 
     return (
-        <Container className="d-flex justify-content-center mt-5 mb-5">
+        <Container className="d-flex flex-column justify-content-center mt-5 mb-5 ">
             <Card style={{ width: '40rem' }} className="p-4">
                 <Form>
                     <h2 className="mt-4">Moyen de payement</h2>
@@ -73,7 +76,16 @@ const SubscriptionPage = () => {
                     </Button>
                 </Form>
             </Card>
+            <div>
+            <PDFDownloadLink document={<Invoice />} fileName='invoice.pdf'>
+            <div className='mt-3'>
+                <HiOutlineDownload size={14}/>
+                <span>Download</span>
+            </div>
+            </PDFDownloadLink>
+            </div>
         </Container>
+        
     );
 };
 
