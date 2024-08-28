@@ -9,7 +9,10 @@ const subscriptionRoute = require('./routes/routeSubscription');
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // Autorise les requêtes depuis ce domaine
+    credentials: true, // Permet d'envoyer des cookies ou des en-têtes d'authentification
+}));
 app.use(cookieParser());
 
 app.use('/database', databaseRoute);

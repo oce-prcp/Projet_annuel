@@ -7,22 +7,6 @@ import axios from 'axios';
 
 const SubscriptionPage = () => {
 
-    const [userId, setUserId] = useState(null);
-
-    useEffect(() => {
-        const getUserId = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/user/getUserId', { withCredentials: true });
-                console.log(response.data);
-                setUserId(response.data.userId);
-                console.log('userId', userId);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        getUserId();
-    }, []);
-
     return (
         <Container className="d-flex justify-content-center mt-5 mb-5">
             <Card style={{ width: '40rem' }} className="p-4">
