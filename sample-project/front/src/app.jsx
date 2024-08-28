@@ -1,13 +1,23 @@
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import React from 'react';
 import HomePage from './pages/HomePage';
+import SubscriptionPage from './pages/SubscriptionPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
-    <div className="App">
-      <HomePage />
-    </div>
+    <>    
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/subscription" element={<SubscriptionPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
