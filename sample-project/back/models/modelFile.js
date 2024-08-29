@@ -3,6 +3,7 @@ const { DataTypes } = require('sequelize')
 
 const User = require('./modelUser')
 
+
 const File = sequelize.define('Files', {
     file_id: {
         type: DataTypes.INTEGER,
@@ -26,11 +27,11 @@ const File = sequelize.define('Files', {
         allowNull: false
     },
     file_format: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING(255),
         allowNull: false
     },
-    file_content: {
-        type: DataTypes.BLOB,
+    file_path: {
+        type: DataTypes.STRING,
         allowNull: false
     }
 }, {
