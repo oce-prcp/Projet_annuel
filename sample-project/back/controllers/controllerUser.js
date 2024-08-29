@@ -59,8 +59,15 @@ exports.LoginUser = async (req, res) => {
         }
 
         const token = jwt.sign({ id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        
+        res.cookie('auth_token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',// Utiliser 'true' en production avec HTTPS
+            maxAge: 3600000 // 1 heure
+        });
+
         console.log('Utilisateur connecté avec succès');
-        res.status(200).json({ user, token });
+        res.status(200).json({ user });
     } catch (error) {
         res.status(500).json(error);
     }
@@ -95,6 +102,22 @@ exports.GetUser = async (req, res) => {
         res.status(200).json(user);        
     } catch (error) {
             res.status(500).json(error);
+    }
+}
+
+exports.GetUserId = async (req, res) => {
+    const token = req.cookies.auth_token;
+
+    if (!token) {
+        console.log('Token non trouvé');
+        return res.status(401).json('Token non trouvé');
+    }
+
+    try{
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        res.status(200).json({ message: 'Accès accordé', userId: decoded.id });
+    } catch (error) {
+        res.status(401).json({ message: 'Token invalide ou expiré' });
     }
 }
 
