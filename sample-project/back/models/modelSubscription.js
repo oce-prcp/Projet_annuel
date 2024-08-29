@@ -14,7 +14,7 @@ const Subscription = sequelize.define("Subscription", {
     allowNull: false,
   },
   subscription_storage_space: {
-    type: DataTypes.DECIMAL(10, 2),
+    type: DataTypes.DOUBLE(25,2),
     allowNull: false,
   },
   subscription_price: {

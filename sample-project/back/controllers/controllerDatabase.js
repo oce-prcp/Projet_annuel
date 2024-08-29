@@ -3,10 +3,11 @@ const User = require('../models/modelUser');
 const File = require('../models/modelFile');
 const Subscription = require('../models/modelSubscription');
 const Invoice = require('../models/modelInvoice');
+require('dotenv').config()
 
 exports.AllTables = async (req, res) => {
     try {
-        await sequelize.query('CREATE DATABASE IF NOT EXISTS `project`');
+        await sequelize.query('CREATE DATABASE IF NOT EXISTS ' + process.env.DBDATABASE);
         await User.sync({ force: true });
         await File.sync({ force: true });
         await Subscription.sync({ force: true });

@@ -38,7 +38,7 @@ const LoginPage = () => {
             if (userId) {
                 const subscriptionResponse = await axios.post(
                     'http://localhost:8000/subscription/create', 
-                    { user_id: userId, storage: 20, price: 20, date: new Date() }
+                    { user_id: userId, price: 20, date: new Date() }
                 );
                 console.log('Subscription created:', subscriptionResponse.data);
             } else {
@@ -63,7 +63,7 @@ const LoginPage = () => {
             setIsSignUp(false);
         } catch (error) {
             console.error(error);
-            alert('Erreur lors de la création du compte.');
+            alert('Erreur lors de la création du compte.' + error);
         }
     };
 
