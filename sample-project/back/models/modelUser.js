@@ -23,6 +23,10 @@ const User = sequelize.define('Users', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    user_storage_space_used: {
+        type: DataTypes.DOUBLE(25,2),
+        allowNull: false
+    },
     user_password: {
         type: DataTypes.STRING,
         allowNull: false
