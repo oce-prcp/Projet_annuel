@@ -19,10 +19,6 @@ const User = sequelize.define('Users', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    user_address: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     user_email: {
         type: DataTypes.STRING,
         allowNull: false
@@ -34,7 +30,12 @@ const User = sequelize.define('Users', {
     user_password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    user_type: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
+    
     },{
         freezeTableName: true,
     }
