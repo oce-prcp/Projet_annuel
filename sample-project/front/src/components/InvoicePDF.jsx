@@ -29,7 +29,7 @@ const Invoice = ({ invoiceId, userId, userAddress, invoiceDate, userName, userFi
 
         logo: { width: 90 },
 
-        reportTitle: { fontSize: 16, textAlign: 'center' },
+        reportTitle: { fontSize: 24, textAlign: 'center' },
 
         addressTitle: { fontSize: 11, fontWeight: 'bold' },
 
@@ -54,7 +54,10 @@ const Invoice = ({ invoiceId, userId, userAddress, invoiceDate, userName, userFi
         <View style={styles.titleContainer}>
             <View style={styles.spaceBetween}>
                 <Image style={styles.logo} src={logo} /> 
-                <Text style={styles.reportTitle}>Data Save</Text>
+                <View>
+                    <Text style={styles.reportTitle}>Data Save</Text>
+                    <Text style={styles.address}>SIRET: 362 521 879 00034</Text> 
+                </View>
             </View>
         </View>
     );

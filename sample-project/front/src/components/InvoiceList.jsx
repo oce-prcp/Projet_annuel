@@ -35,7 +35,7 @@ const InvoiceList = () => {
     return (
         <Card>
             <Card.Header>Liste des factures</Card.Header>
-            <Card.Body>
+            <Card.Body className="d-flex" style={{ gap: '1%' }}>
                 {invoices.length > 0 ? (
                     invoices.map((invoice) => (
                         <InvoiceCard

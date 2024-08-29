@@ -1,4 +1,7 @@
 const User = require('../models/modelUser')
+const Invoice = require('../models/modelInvoice')
+const Subscription = require('../models/modelSubscription')
+const File = require('../models/modelFile')
 
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -75,21 +78,55 @@ exports.LoginUser = async (req, res) => {
 }
 
 exports.DeleteUser = async (req, res) => {
-    try {
-        const { user_id } = req.params;
-        const user = await User.findOne({ where: { user_id: user_id } });
-        if (!user) {
-            console.log('Utilisateur non trouvé');
-            return res.status(401).json('Utilisateur non trouvé');
-        }
-        await User.destroy({ where: { user_id: user_id } });
-        console.log('Utilisateur supprimé avec succès');
-        res.status(200).json('Utilisateur supprimé avec succès');
+    const { user_id } = req.params;
 
-    } catch (error) {
-        res.status(500).json(error);
+    if (!user_id) {
+        console.log('Utilisateur non trouvé');
+        return res.status(401).json('Utilisateur non trouvé');
     }
-}
+
+    try {
+        const invoicesDeleted = await Invoice.destroy({ where: { user_id: user_id } });
+        if (invoicesDeleted > 0) {
+            console.log(`Factures supprimées : ${invoicesDeleted}`);
+        } else {
+            console.log('Aucune facture trouvée pour cet utilisateur');
+        }
+
+        const subscriptionDeleted = await Subscription.destroy({ where: { user_id: user_id } });
+        if (subscriptionDeleted) {
+            console.log('Abonnement supprimé');
+        } else {
+            console.log('Aucun abonnement trouvé pour cet utilisateur');
+        }
+
+        const filesDeleted = await File.destroy({ where: { user_id: user_id } });
+        if (filesDeleted > 0) {
+            console.log(`Fichiers supprimés : ${filesDeleted}`);
+        } else {
+            console.log('Aucun fichier trouvé pour cet utilisateur');
+        }
+
+        // Suppression de l'utilisateur
+        const userDeleted = await User.destroy({ where: { user_id: user_id } });
+        res.clearCookie('auth_token', {
+            path: '/',
+            secure: process.env.NODE_ENV === 'production',
+            httpOnly: true
+        });
+
+        if (userDeleted) {
+            console.log('Utilisateur supprimé avec succès');
+            return res.status(200).json('Utilisateur supprimé avec succès');
+        } else {
+            console.log('Utilisateur non trouvé');
+            return res.status(404).json('Utilisateur non trouvé');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+        return res.status(500).json({ error: 'Une erreur est survenue lors de la suppression de l\'utilisateur.' });
+    }
+};
 
 exports.GetUser = async (req, res) => {
     try {

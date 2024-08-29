@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './SubscriptionPage.css';
 import { Container, Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { HiOutlineDownload } from 'react-icons/hi'
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import Invoice from "../components/InvoicePDF";
-
 
 
 const SubscriptionPage = () => {
@@ -26,6 +22,7 @@ const SubscriptionPage = () => {
     }, []);
 
     const handleSubscription = async () => {
+
         try {
             if (!userId) {
                 alert('User ID non trouvé. Veuillez vous connecter à nouveau.');
@@ -69,30 +66,24 @@ const SubscriptionPage = () => {
                     </div>
                     <Form.Group className="mb-3" controlId="formCardNumber">
                         <Form.Label>Numéro de carte</Form.Label>
-                        <Form.Control type="text" placeholder="1234 5678 9012 3456" />
+                        <Form.Control type="text" placeholder="1234 5678 9012 3456" required />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formExpiryDate">
                         <Form.Label>Date d'expiration</Form.Label>
-                        <Form.Control type="text" placeholder="MM/YY" />
+                        <Form.Control type="text" placeholder="MM/YY" required />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formCVC">
                         <Form.Label>CVC / CVV</Form.Label>
-                        <Form.Control type="text" placeholder="3 digits" />
+                        <Form.Control type="text" placeholder="3 digits" required />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formCardName">
                         <Form.Label>Nom inscrit sur la carte</Form.Label>
-                        <Form.Control type="text" placeholder="John Doe" />
+                        <Form.Control type="text" placeholder="John Doe" required />
                     </Form.Group>
-                    <Button variant="primary" type="button" className="mt-3" onClick={handleSubscription}>
+                    <Button variant="primary" type="submit" className="mt-3" onClick={handleSubscription}>
                         Confirmer et acheter de l'espace
                     </Button>
                 </Form>
-                <PDFDownloadLink document={<Invoice />} fileName='invoice.pdf'>
-                <Button className='mt-3'>
-                    <HiOutlineDownload size={14}/>
-                    <span>Télécharger une facture</span>
-                </Button>
-            </PDFDownloadLink>
             </Card>
 
         </Container>
