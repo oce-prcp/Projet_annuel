@@ -1,0 +1,178 @@
+/* src/components/Dashboard.css */
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: #f0f0f0; Fond gris clair pour contraster avec les éléments */
+    color: #475155;
+    padding: 20px;
+}
+
+.dashboard-title {
+    padding-left: 10px;
+}
+
+.subscription-info-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.subscription-box {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+    margin: 0 10px;
+    background-color: white;
+    border: 1px solid rgb(165, 165, 165);
+    border-radius: 5px;
+    color: #0A242E; /* Couleur du titre */
+}
+
+.storage-indicator-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.storage-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #038A8A; /* Vert émeraude par défaut */
+    color: white;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.file-list-section {
+    width: 80%;
+    background-color: white;
+    border: 1px solid rgb(165, 165, 165);
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.file-list-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #0A242E; /* Couleur de fond pour l'en-tête */
+    color: white; /* Texte blanc pour contraste */
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.file-list {
+    padding: 10px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.file-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.file-card:hover {
+    background-color: #f1f1f1; /* Couleur de survol */
+}
+
+.file-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.file-name {
+    flex: 1;
+    color: black !important;
+    font-size: 1rem;
+}
+
+.file-name:hover {
+    text-decoration: underline;
+}
+
+.file-date, .file-size {
+    flex: 1;
+    font-size: 0.8rem;
+}
+
+.file-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.action-icon:hover {
+    transform: scale(1.1);
+}
+
+.add-storage-button {
+    background-color: #038A8A;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.add-file-button-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.add-file-button {
+    background-color: #038A8A;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.pourcentageDiv{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.upload-container {
+    border: 2px dashed #ddd;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f8f9fa;
+}
+
+.upload-label {
+    color: #0A242E;
+    font-weight: bold;
+}
+
+.upload-info {
+    margin-top: 10px;
+    color: #475155;
+    font-size: 0.9em;
+}

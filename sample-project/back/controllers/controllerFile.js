@@ -149,3 +149,31 @@ exports.getAllFiles = async (req, res) => {
         res.status(500).json({ message: 'Erreur lors de la récupération des fichiers.' });
     }
 };
+
+exports.downloadFile = async (req, res) => {
+    try {
+        const { fileId } = req.params;
+        const file = await File.findByPk(fileId);
+
+        if (!file) {
+            return res.status(404).json({ message: "Fichier non trouvé." });
+        }
+
+        const filePath = path.resolve(file.file_path);
+
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).json({ message: "Fichier non trouvé sur le serveur." });
+        }
+
+        // Utilisez res.download pour envoyer le fichier en tant que téléchargement
+        res.download(filePath, file.file_name, (err) => {
+            if (err) {
+                console.error("Erreur lors du téléchargement du fichier:", err);
+                res.status(500).json({ message: 'Erreur lors du téléchargement du fichier.' });
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erreur lors de la récupération du fichier.' });
+    }
+};
