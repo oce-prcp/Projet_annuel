@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './SubscriptionPage.css';
 import { Container, Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-import {HiOutlineDownload, HiOutlinePrinter} from 'react-icons/hi'
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import Invoice from "../components/InvoicePDF";
-
 
 
 const SubscriptionPage = () => {
@@ -26,6 +22,7 @@ const SubscriptionPage = () => {
     }, []);
 
     const handleSubscription = async () => {
+
         try {
             if (!userId) {
                 alert('User ID non trouvé. Veuillez vous connecter à nouveau.');
@@ -42,10 +39,22 @@ const SubscriptionPage = () => {
             console.error('Erreur lors de la mise à jour de l\'abonnement:', error);
             alert('Erreur lors de l\'achat de l\'espace de stockage.');
         }
+        
+        try{
+            const response = await axios.post(
+                'http://localhost:8000/invoice/create',
+                { user_id: userId }
+            );
+            console.log(response.data);
+            alert('Facture créée avec succès.');
+        }catch(error){
+            console.error('Erreur lors de la création de la facture:', error);
+            alert('Erreur lors de la création de la facture.');
+        }
     };
 
     return (
-        <Container className="d-flex flex-column justify-content-center mt-5 mb-5 ">
+        <Container className="d-flex justify-content-center mt-5 mb-5 ">
             <Card style={{ width: '40rem' }} className="p-4">
                 <Form>
                     <h2 className="mt-4">Moyen de payement</h2>
@@ -57,35 +66,27 @@ const SubscriptionPage = () => {
                     </div>
                     <Form.Group className="mb-3" controlId="formCardNumber">
                         <Form.Label>Numéro de carte</Form.Label>
-                        <Form.Control type="text" placeholder="1234 5678 9012 3456" />
+                        <Form.Control type="text" placeholder="1234 5678 9012 3456" required />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formExpiryDate">
                         <Form.Label>Date d'expiration</Form.Label>
-                        <Form.Control type="text" placeholder="MM/YY" />
+                        <Form.Control type="text" placeholder="MM/YY" required />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formCVC">
                         <Form.Label>CVC / CVV</Form.Label>
-                        <Form.Control type="text" placeholder="3 digits" />
+                        <Form.Control type="text" placeholder="3 digits" required />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formCardName">
                         <Form.Label>Nom inscrit sur la carte</Form.Label>
-                        <Form.Control type="text" placeholder="John Doe" />
+                        <Form.Control type="text" placeholder="John Doe" required />
                     </Form.Group>
-                    <Button variant="primary" type="button" className="mt-3" onClick={handleSubscription}>
+                    <Button variant="primary" type="submit" className="mt-3" onClick={handleSubscription}>
                         Confirmer et acheter de l'espace
                     </Button>
                 </Form>
             </Card>
-            <div>
-            <PDFDownloadLink document={<Invoice />} fileName='invoice.pdf'>
-            <div className='mt-3'>
-                <HiOutlineDownload size={14}/>
-                <span>Download</span>
-            </div>
-            </PDFDownloadLink>
-            </div>
+
         </Container>
-        
     );
 };
 

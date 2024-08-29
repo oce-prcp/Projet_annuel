@@ -1,22 +1,22 @@
 const Subscription = require('../models/modelSubscription')
 
 exports.CreateSubscription = async (req, res) => {
-    const { user_id, storage, price, date } = req.body;
+    const { user_id, price, date } = req.body;
 
-    if (!user_id || !storage || !price || !date) {
-        return res.status(400).json({ message: 'Tous les champs sont obligatoires : user_id, storage, price, date.' });
+    if (!user_id || !price || !date) {
+        return res.status(400).json({ message: 'Tous les champs sont obligatoires : user_id, price, date.' });
     }
 
     try {
         const existingSubscription = await Subscription.findOne({ where: { user_id: user_id } });
 
         if (existingSubscription) {
-            return res.status(400).json({ message: 'Une souscription existe déjà pour cet utilisateur.' });
+            return res.status(200).json({ message: 'Une souscription existe déjà pour cet utilisateur.' });
         }
 
         const subscription = await Subscription.create({
             user_id: user_id,
-            subscription_storage_space: storage,
+            subscription_storage_space: 21474836480.00,
             subscription_price: price,
             subscription_date: date
         });
@@ -42,7 +42,7 @@ exports.UpdateSubscription = async (req, res) => {
         }
 
         await subscription.increment({
-            subscription_storage_space: 20.0000,
+            subscription_storage_space: 21474836480.00,
             subscription_price: 20.0000
         });
     

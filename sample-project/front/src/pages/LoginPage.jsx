@@ -8,6 +8,7 @@ const LoginPage = () => {
     const [name, setName] = useState('');
     const [firstname, setFirstname] = useState('');
     const [phone, setPhone] = useState('');
+    const [adress, setAdress] = useState('');
     const [isSignUp, setIsSignUp] = useState(false); // État pour gérer la vue (connexion ou inscription)
     /*const [userId, setUserId] = useState(null);
     const getUserId = async () => {
@@ -37,12 +38,14 @@ const LoginPage = () => {
             if (userId) {
                 const subscriptionResponse = await axios.post(
                     'http://localhost:8000/subscription/create', 
-                    { user_id: userId, storage: 20, price: 20, date: new Date() }
+                    { user_id: userId, price: 20, date: new Date() }
                 );
                 console.log('Subscription created:', subscriptionResponse.data);
             } else {
                 console.error('User ID not found after login.');
             }
+
+            window.location.href = '/';
         } catch (error) {
             console.error('Error during login or subscription creation:', error);
             alert('Email ou mot de passe incorrect');
@@ -53,7 +56,7 @@ const LoginPage = () => {
         try {
             const response = await axios.post(
                 'http://localhost:8000/user/signup', 
-                { email: userEmail, password: password, name: name, firstname: firstname, phone: phone }
+                { email: userEmail, password: password, name: name, firstname: firstname, phone: phone, adress: adress }
             );
             console.log(response.data);
             alert('Compte créé avec succès, veuillez vous connecter.');
@@ -110,6 +113,14 @@ const LoginPage = () => {
                                         type="text"
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="formBasicAdress">
+                                    <Form.Label>Adresse:</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={adress}
+                                        onChange={(e) => setAdress(e.target.value)}
                                     />
                                 </Form.Group>
                             </>
