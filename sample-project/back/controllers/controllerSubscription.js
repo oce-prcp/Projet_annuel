@@ -11,7 +11,7 @@ exports.CreateSubscription = async (req, res) => {
         const existingSubscription = await Subscription.findOne({ where: { user_id: user_id } });
 
         if (existingSubscription) {
-            return res.status(400).json({ message: 'Une souscription existe déjà pour cet utilisateur.' });
+            return res.status(200).json({ message: 'Une souscription existe déjà pour cet utilisateur.' });
         }
 
         const subscription = await Subscription.create({
