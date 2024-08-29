@@ -79,7 +79,7 @@ const HomePage = () => {
                                     <a className="nav-link" href="#contact" style={{ color: textColor }}>Contact</a>
                                 </li>
                             </ul>
-                            <a className="btn btn-outline-light" href="#" style={{ backgroundColor: '#038A8A', color: 'white', borderColor: textColor }}>
+                            <a className="btn btn-outline-light" href="/login" style={{ backgroundColor: '#038A8A', color: 'white', borderColor: textColor }}>
                                 Se connecter
                             </a>
                         </div>
@@ -112,7 +112,7 @@ const HomePage = () => {
                 <p className="lead" style={{ fontFamily: "'Poppins', sans-serif" }}>
                     Solution de stockage de données au meilleur prix
                 </p>
-                <a href="#" className="btn btn-lg mt-3" style={{ backgroundColor: '#038A8A', color: 'white', fontFamily: "'Poppins', sans-serif" }}>
+                <a href="/subscription" className="btn btn-lg mt-3" style={{ backgroundColor: '#038A8A', color: 'white', fontFamily: "'Poppins', sans-serif" }}>
                     Créer un Compte
                 </a>
             </div>
