@@ -2,13 +2,14 @@ import React, { Fragment } from 'react';
 import { Image, Text, View, Page, Document, StyleSheet } from '@react-pdf/renderer';
 import logo from '../assets/logo_data_save.png';
 
-const Invoice = () => {
+const Invoice = ({ invoiceId, userId, userAddress, invoiceDate, userName, userFirstName}) => {
 
     const reciept_data = {
         "id": "642be0b4bbe5d71a5341dfb1",
-        "invoice_no": "20200669",
-        "address": "Adresse à insérer",
-        "date": "24-09-2019",
+        "invoice_no": `${invoiceId}${userId}`,
+        "address": userAddress,
+        "name": `${userName} ${userFirstName}`,
+        "date": new Date(invoiceDate).toLocaleDateString('fr-FR'), // Format DD/MM/YYYY
         "items": [
             {
                 "id": 1,
@@ -28,7 +29,7 @@ const Invoice = () => {
 
         logo: { width: 90 },
 
-        reportTitle: { fontSize: 16, textAlign: 'center' },
+        reportTitle: { fontSize: 24, textAlign: 'center' },
 
         addressTitle: { fontSize: 11, fontWeight: 'bold' },
 
@@ -52,8 +53,11 @@ const Invoice = () => {
     const InvoiceTitle = () => (
         <View style={styles.titleContainer}>
             <View style={styles.spaceBetween}>
-                <Image style={styles.logo} src={logo} />
-                <Text style={styles.reportTitle}>Data Save</Text>
+                <Image style={styles.logo} src={logo} /> 
+                <View>
+                    <Text style={styles.reportTitle}>Data Save</Text>
+                    <Text style={styles.address}>SIRET: 362 521 879 00034</Text> 
+                </View>
             </View>
         </View>
     );
@@ -62,7 +66,7 @@ const Invoice = () => {
         <View style={styles.titleContainer}>
             <View style={styles.spaceBetween}>
                 <View>
-                    <Text style={styles.invoice}>Facture</Text>
+                    <Text style={styles.invoice}>Facture d'achat d'espace de stockage</Text>
                     <Text style={styles.invoiceNumber}>Facture numéro: {reciept_data.invoice_no}</Text>
                 </View>
                 <View>
@@ -81,6 +85,9 @@ const Invoice = () => {
                     <Text style={styles.addressTitle}>Facturé à</Text>
                     <Text style={styles.address}>
                         {reciept_data.address}
+                    </Text>
+                    <Text style={styles.address}>
+                        {reciept_data.name}
                     </Text>
                 </View>
                 <Text style={styles.addressTitle}>{reciept_data.date}</Text>
@@ -129,15 +136,23 @@ const Invoice = () => {
     const TableTotal = () => (
         <View style={{ width: '100%', flexDirection: 'row' }}>
             <View style={styles.total}>
-                <Text></Text>
-            </View>
-            <View style={styles.total}>
-                <Text> </Text>
-            </View>
+                    <Text></Text>   
+                </View>
+                <View style={styles.total}>
+                    <Text> </Text>   
+                </View>
+                <View style={styles.tbody}>
+                    <Text>Montant TVA</Text>
+                    <Text>Montant HT</Text>
+                    <Text>Total</Text>  
+                </View>
             <View style={styles.tbody}>
-                <Text>Total</Text>
-            </View>
-            <View style={styles.tbody}>
+                <Text>
+                    {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.2).toFixed(2)}
+                </Text>
+                <Text>
+                    {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.74).toFixed(2)}
+                </Text>
                 <Text>
                     {reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0).toFixed(2)}
                 </Text>
