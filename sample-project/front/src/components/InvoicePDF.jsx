@@ -2,14 +2,14 @@ import React, { Fragment } from 'react';
 import { Image, Text, View, Page, Document, StyleSheet } from '@react-pdf/renderer';
 import logo from '../assets/logo_data_save.png';
 
-const Invoice = ({ id, address, date, name}) => {
+const Invoice = ({ invoiceId, userId, userAddress, invoiceDate, userName, userFirstName}) => {
 
     const reciept_data = {
         "id": "642be0b4bbe5d71a5341dfb1",
-        "invoice_no": id,
-        "address": address,
-        "name": name,
-        "date": date,
+        "invoice_no": `${invoiceId}${userId}`,
+        "address": userAddress,
+        "name": `${userName} ${userFirstName}`,
+        "date": new Date(invoiceDate).toLocaleDateString('fr-FR'), // Format DD/MM/YYYY
         "items": [
             {
                 "id": 1,
@@ -53,7 +53,7 @@ const Invoice = ({ id, address, date, name}) => {
     const InvoiceTitle = () => (
         <View style={styles.titleContainer}>
             <View style={styles.spaceBetween}>
-                <Image style={styles.logo} src={logo} />
+                <Image style={styles.logo} src={logo} /> 
                 <Text style={styles.reportTitle}>Data Save</Text>
             </View>
         </View>
@@ -63,7 +63,7 @@ const Invoice = ({ id, address, date, name}) => {
         <View style={styles.titleContainer}>
             <View style={styles.spaceBetween}>
                 <View>
-                    <Text style={styles.invoice}>Facture</Text>
+                    <Text style={styles.invoice}>Facture d'achat d'espace de stockage</Text>
                     <Text style={styles.invoiceNumber}>Facture numéro: {reciept_data.invoice_no}</Text>
                 </View>
                 <View>
@@ -133,14 +133,16 @@ const Invoice = ({ id, address, date, name}) => {
     const TableTotal = () => (
         <View style={{ width: '100%', flexDirection: 'row' }}>
             <View style={styles.total}>
-                <Text>TVA</Text>
-            </View>
-            <View style={styles.total}>
-                <Text>Total hors taxes</Text>
-            </View>
-            <View style={styles.tbody}>
-                <Text>Total</Text>
-            </View>
+                    <Text></Text>   
+                </View>
+                <View style={styles.total}>
+                    <Text> </Text>   
+                </View>
+                <View style={styles.tbody}>
+                    <Text>Montant TVA</Text>
+                    <Text>Montant HT</Text>
+                    <Text>Total</Text>  
+                </View>
             <View style={styles.tbody}>
                 <Text>
                     {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.2).toFixed(2)}

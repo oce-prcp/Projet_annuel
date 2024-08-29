@@ -1,16 +1,21 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
-
 import Invoice from "./InvoicePDF";
+import { HiOutlineDownload } from 'react-icons/hi'
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
-
-const InvoiceCard = () => {
+const InvoiceCard = ({ invoiceId, userId, userName, userFirstName, userAddress, invoiceDate }) => {
   return (
-    <Card>
-      <Card.Header>Facture</Card.Header>
+    <Card style={{ marginBottom: '20px' }}>
+      <Card.Header>Facture {invoiceId}</Card.Header>
       <Card.Body>
-        <Invoice id={userId} name={userName} address={userAddress} date ={UserDate} />
-        <Button variant="primary">Télécharger</Button>
+      <PDFDownloadLink document={<Invoice invoiceId={invoiceId} userId={userId} userName={userName} userFirstName={userFirstName} userAddress={userAddress} invoiceDate={invoiceDate}/>} fileName='invoice.pdf'>
+            <Button className='mt-3'>
+                <HiOutlineDownload size={14}/>
+                <span>Télécharger une facture</span>
+            </Button>
+        </PDFDownloadLink>
+
       </Card.Body>
     </Card>
   );

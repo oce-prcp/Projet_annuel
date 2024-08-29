@@ -30,7 +30,7 @@ exports.CreateUser = async (req, res) => {
             user_email: email,
             user_storage_space_used: 0,
             user_password: hashedPassword,
-            user_adress: adress,
+            user_address: adress,
             user_type: "user"
         });
         console.log('Utilisateur créé avec succès :', user);
@@ -76,13 +76,13 @@ exports.LoginUser = async (req, res) => {
 
 exports.DeleteUser = async (req, res) => {
     try {
-        const { id } = req.params;
-        const user = await User.findOne({ where: { user_id: id } });
+        const { user_id } = req.params;
+        const user = await User.findOne({ where: { user_id: user_id } });
         if (!user) {
             console.log('Utilisateur non trouvé');
             return res.status(401).json('Utilisateur non trouvé');
         }
-        await User.destroy({ where: { user_id: id } });
+        await User.destroy({ where: { user_id: user_id } });
         console.log('Utilisateur supprimé avec succès');
         res.status(200).json('Utilisateur supprimé avec succès');
 
@@ -93,18 +93,26 @@ exports.DeleteUser = async (req, res) => {
 
 exports.GetUser = async (req, res) => {
     try {
-        const { id } = req.params;
-        const user = await User.findOne({ where: { user_id: id } });
-        if (!user) {
-            console.log('Utilisateur non trouvé');
-            return res.status(401).json('Utilisateur non trouvé');
+        const { user_id } = req.params;
+        if (!user_id) {
+            return res.status(400).json({ message: 'ID utilisateur manquant dans les paramètres de la requête.' });
         }
-        console.log('Utilisateur trouvé avec succès');
-        res.status(200).json(user);        
+
+        const user = await User.findOne({ where: { user_id: user_id } });
+
+        if (!user) {
+            console.log(`Utilisateur avec l'ID ${user_id} non trouvé`);
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+
+        console.log(`Utilisateur avec l'ID ${user_id} trouvé avec succès`);
+        return res.status(200).json(user);
+
     } catch (error) {
-            res.status(500).json(error);
+        console.error('Erreur lors de la récupération de l\'utilisateur:', error);
+        return res.status(500).json({ message: 'Erreur serveur lors de la récupération de l\'utilisateur', error });
     }
-}
+};
 
 exports.GetUserId = async (req, res) => {
     const token = req.cookies.auth_token;

@@ -8,12 +8,6 @@ exports.CreateInvoice = async (req, res) => {
     }
 
     try {
-        const existingInvoice = await Invoice.findOne({ where: { user_id: user_id } });
-
-        if (existingInvoice) {
-            return res.status(400).json({ message: 'Une facture existe déjà pour cet utilisateur.' });
-        }
-
         const invoice = await Invoice.create({
             user_id: user_id
         });

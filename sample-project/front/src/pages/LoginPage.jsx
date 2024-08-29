@@ -44,6 +44,8 @@ const LoginPage = () => {
             } else {
                 console.error('User ID not found after login.');
             }
+
+            window.location.href = '/';
         } catch (error) {
             console.error('Error during login or subscription creation:', error);
             alert('Email ou mot de passe incorrect');
