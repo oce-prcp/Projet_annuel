@@ -4,26 +4,28 @@
     const File = require('../models/modelFile')
 
     require ('dotenv').config()
+
     const bcrypt = require('bcrypt')
     const jwt = require('jsonwebtoken')
     const nodemailer = require('nodemailer');
+    
+    const mailBody = require('../mail/accountCreate');
+    const mailBodyAccountDeletion = require('../mail/accountDelete');
+    const mailBodyAccountDeletionAdmin = require('../mail/accountDeleteAdmin');
 
     const transporter = nodemailer.createTransport({
-        service: 'gmail', // Vous pouvez changer cela pour tout autre service
+        service: 'gmail',   
         auth: {
-            user: "datasavecontact@gmail.com", // Votre adresse e-mail
-            pass: "kqpr nhbq hupf lfeu"  // Votre mot de passe d'application (si vous utilisez Gmail)
+            user: process.env.EMAIL_CONTACT,
+            pass: process.env.EMAIL_PASSWORD
         }
     });
-
-    const sendWelcomeEmail = (email, name) => {
-        const mailOptions = {
-            from: "datasavecontact@gmail.com",
-            to: email,
-            subject: 'Bienvenue sur Data Save !',
-            html: `Bonjour ${name},\n\nMerci de vous être inscrit sur notre plateforme. Nous sommes ravis de vous accueillir.\n\nCordialement,\nL'équipe`
-        };
-
+    
+    const sendWelcomeEmail = (email, userName) => {
+        const mailOptions = mailBody(userName); // Utiliser mailBody pour créer le corps de l'e-mail
+        mailOptions.from = "datasavecontact@gmail.com"; // Définir l'expéditeur
+        mailOptions.to = email; // Définir le destinataire
+    
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 return console.log('Erreur lors de l\'envoi de l\'e-mail:', error);
@@ -31,6 +33,31 @@
             console.log('E-mail envoyé avec succès:', info.response);
         });
     };
+    
+    const sendDeleteEmail = (email, userName) => {
+        const mailOptions = mailBodyAccountDeletion(userName);
+        mailOptions.from = "datasavecontact@gmail.com";
+        mailOptions.to = email;
+    
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return console.log('Erreur lors de l\'envoi de l\'e-mail:', error);
+            }
+            console.log('E-mail envoyé avec succès:', info.response);
+        });
+    };
+
+    const sendDeleteEmailAdmin = (userName, fileCount) => {
+        const mailOptions = mailBodyAccountDeletionAdmin(userName, fileCount);
+        mailOptions.from = "datasavecontact@gmail.com";
+        mailOptions.to = process.env.EMAIL_CONTACT;
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return console.log('Erreur lors de l\'envoi de l\'e-mail:', error);
+            }
+            console.log('E-mail envoyé avec succès:', info.response);
+        });
+    }
 
 
     exports.CreateUser = async (req, res) => {
@@ -127,6 +154,8 @@
                 console.log('Aucun abonnement trouvé pour cet utilisateur');
             }
 
+            const fileCount = await File.count({ where: { user_id: user_id } });
+            
             const filesDeleted = await File.destroy({ where: { user_id: user_id } });
             if (filesDeleted > 0) {
                 console.log(`Fichiers supprimés : ${filesDeleted}`);
@@ -134,14 +163,24 @@
                 console.log('Aucun fichier trouvé pour cet utilisateur');
             }
 
+            const user = await User.findOne({ where: { user_id: user_id } });
+
+            sendDeleteEmail(user.user_email, user.user_first_name);
+            sendDeleteEmailAdmin(user.user_first_name, fileCount);
+
+
             const userDeleted = await User.destroy({ where: { user_id: user_id } });
             if (userDeleted > 0) {
                 console.log('Utilisateur supprimé avec succès');
+
                 return res.status(200).json('Utilisateur supprimé avec succès');
             } else {
                 console.log('Aucun utilisateur trouvé avec cet identifiant');
                 return res.status(404).json('Aucun utilisateur trouvé avec cet identifiant');
             }
+
+            
+
         } catch (error) {
             console.error('Erreur lors de la suppression de l\'utilisateur :', error);
             return res.status(500).json({ error: 'Une erreur est survenue lors de la suppression de l\'utilisateur.' });

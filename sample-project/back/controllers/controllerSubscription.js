@@ -1,4 +1,30 @@
-const Subscription = require('../models/modelSubscription')
+const Subscription = require('../models/modelSubscription');
+const User = require('../models/modelUser')
+
+require ('dotenv').config()
+const nodemailer = require('nodemailer');
+const mailBodyStoragePurchase = require('../mail/buyStorage');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: "datasavecontact@gmail.com",
+        pass: "kqpr nhbq hupf lfeu"
+    }
+});
+
+const sendBuyEmail = (email, firstname) => {
+    const mailOptions = mailBodyStoragePurchase(firstname);
+    mailOptions.from = "datasavecontact@gmail.com";
+    mailOptions.to = email;
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log('Erreur lors de l\'envoi de l\'e-mail:', error);
+        }
+        console.log('E-mail envoyé avec succès:', info.response);
+    });
+};
 
 exports.CreateSubscription = async (req, res) => {
     const { user_id, price, date } = req.body;
@@ -47,7 +73,10 @@ exports.UpdateSubscription = async (req, res) => {
         });
     
         await subscription.reload();
-    
+
+        const user = await User.findOne({ where: { user_id: user_id } });
+        sendBuyEmail(user.user_email, user.user_first_name);
+
         res.status(200).json(subscription);
     } catch (error) {
         console.error(error);

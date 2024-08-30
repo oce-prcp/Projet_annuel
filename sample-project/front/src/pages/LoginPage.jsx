@@ -10,18 +10,7 @@ const LoginPage = () => {
     const [phone, setPhone] = useState('');
     const [adress, setAdress] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
-     // État pour gérer la vue (connexion ou inscription)
-    /*const [userId, setUserId] = useState(null);
-    const getUserId = async () => {
-        try {
-            const response = await axios.get('http://localhost:8000/user/getId', { withCredentials: true });
-            console.log(response.data);
-            setUserId(response.data.userId);
-        } catch (error) {
-            console.error(error);
-        }
-    };*/
-    
+   
     const handleLogin = async () => {
         try {
             // Effectuer la connexion
@@ -48,7 +37,7 @@ const LoginPage = () => {
         } catch (error) {
             alert('Erreur lors de la connexion.' + error);
         }
-        }
+    }
 
     const handleSignUp = async () => {
         try {
