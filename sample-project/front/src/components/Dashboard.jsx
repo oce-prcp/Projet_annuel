@@ -1,9 +1,11 @@
-// src/components/Dashboard.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Modal, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'; // Importer useNavigate
+import { useNavigate } from 'react-router-dom'; 
+import { Button } from 'react-bootstrap';
+import SubscriptionInfo from './SubscriptionInfo';
+import FileList from './FileList';
+import UploadModal from './UploadModal';
+import SearchFilterBar from './SearchFilterBar';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -13,53 +15,106 @@ const Dashboard = () => {
     const [storageUsed, setStorageUsed] = useState(0);
     const [storageLimit, setStorageLimit] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [subscriptionError, setSubscriptionError] = useState(false);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedFileType, setSelectedFileType] = useState('All');
 
-    const navigate = useNavigate(); // Utiliser useNavigate
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetchData();
+        fetchUserId();
     }, []);
 
-    const fetchData = async () => {
+    const fetchUserId = async () => {
         try {
             const userResponse = await axios.get('http://localhost:8000/user/getUserId', { withCredentials: true });
             const userId = userResponse.data.userId;
+            if (!userId) {
+                throw new Error('User ID not found');
+            }
             setUserId(userId);
+            fetchData(userId);
+        } catch (error) {
+            alert('Vous ne semblez pas ou plus connecté. Veuillez vous connecter avant d\'accéder à votre dashboard.');
+            navigate('/');
+        }
+    };
 
-            const fileResponse = await axios.get(`http://localhost:8000/files/user/${userId}`);
-            setFiles(fileResponse.data);
-
+    const fetchData = async (userId) => {
+        try {
             const subscriptionResponse = await axios.get(`http://localhost:8000/subscription/get/${userId}`);
             setSubscription(subscriptionResponse.data);
             setStorageLimit(subscriptionResponse.data.subscription_storage_space);
+
+            const fileResponse = await axios.get(`http://localhost:8000/files/user/${userId}`);
+            setFiles(fileResponse.data);
 
             const userDetailsResponse = await axios.get(`http://localhost:8000/user/get/${userId}`);
             setStorageUsed(userDetailsResponse.data.user_storage_space_used);
 
         } catch (error) {
             console.error('Erreur lors de la récupération des données:', error);
+            if (error.response && error.response.status === 401) {
+                setSubscriptionError(true);
+            }
         }
     };
 
+    const getFileTypeCategory = (mimeType) => {
+        if (mimeType.startsWith('image/')) return 'image';
+        if (mimeType.startsWith('video/')) return 'video';
+        if (mimeType.startsWith('audio/')) return 'audio';
+        if (mimeType === 'application/pdf') return 'pdf';
+        if (mimeType.startsWith('text/')) return 'text';
+        return 'autres';
+    };
+
     const bytesToGigabytes = (bytes) => (bytes / 1073741824).toFixed(2);
-    const bytesToMegabytes = (bytes) => (bytes / 1048576).toFixed(2);
 
     const storageUsedInGB = bytesToGigabytes(storageUsed);
     const storageLimitInGB = bytesToGigabytes(storageLimit);
-    const storagePercentage = Math.min((storageUsed / storageLimit) * 100, 100);
 
-    const getColorForStorage = () => {
-        if (storagePercentage < 50) return '#328000'; // Vert
-        if (storagePercentage < 80) return '#FFA500'; // Orange
-        return '#FF0000'; // Rouge
+    const storagePercentage = storageLimit > 0 ? Math.min((storageUsed / storageLimit) * 100, 100) : 0;
+    // const storagePercentage = 80;
+    
+    const handleSort = (key) => {
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
     };
+
+    const sortedFiles = React.useMemo(() => {
+        let sortableFiles = [...files];
+        if (sortConfig.key !== null) {
+            sortableFiles.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'asc' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'asc' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableFiles;
+    }, [files, sortConfig]);
+
+    const filteredFiles = sortedFiles.filter(file => 
+        file.file_name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (selectedFileType === 'All' || getFileTypeCategory(file.file_format) === selectedFileType)
+    );
 
     const handleDelete = async (fileId) => {
         const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer ce fichier ?");
         if (confirmDelete) {
             try {
                 await axios.delete(`http://localhost:8000/files/${fileId}`);
-                await fetchData(); // Met à jour les données après suppression
+                setFiles(prevFiles => prevFiles.filter(file => file.file_id !== fileId));
+                const updatedStorageUsed = storageUsed - files.find(file => file.file_id === fileId).file_size;
+                setStorageUsed(updatedStorageUsed);
             } catch (error) {
                 console.error('Erreur lors de la suppression du fichier:', error);
             }
@@ -94,8 +149,8 @@ const Dashboard = () => {
                     },
                 });
 
-                await fetchData(); // Met à jour les données après téléchargement
-                setShowModal(false); // Fermer la modal après téléchargement réussi
+                await fetchUserId(); 
+                setShowModal(false); 
                 console.log('Fichier téléchargé avec succès:', response.data.message);
             } catch (error) {
                 console.error('Erreur lors du téléchargement du fichier:', error);
@@ -103,102 +158,46 @@ const Dashboard = () => {
         }
     };
 
-    // Fonction pour rediriger vers la page d'abonnement
     const handleSubscriptionRedirect = () => {
         navigate('/subscription');
     };
-
     return (
         <div className="dashboard">
-            <div className="subscription-info-container">
-                <div className="subscription-box">
-                    <h3>Mon Abonnement</h3>
-                    <p>{storageLimitInGB} Go</p>
-                </div>
-                <div className="subscription-box">
-                    <h3>Espace Utilisé</h3>
-                    <p>{storageUsedInGB} Go</p>
-                </div>
-                <div className="subscription-box">
-                    <h3>Utilisation du Stockage</h3>
-                    <div className="pourcentageDiv">
-                        <span className="storage-indicator" style={{ backgroundColor: getColorForStorage() }}>
-                        </span>
-                        <p><strong>{storagePercentage.toFixed(2)}%</strong></p>
+            {subscriptionError ? (
+                <div className="subscription-error-overlay">
+                    <div className="subscription-error-popup">
+                        <h2>Vous n'avez pas d'abonnement actif</h2>
+                        <p>Pour accéder à toutes les fonctionnalités, veuillez acheter un abonnement.</p>
+                        <Button onClick={() => navigate('/subscription')}>Acheter du stockage</Button>
+                        <Button variant="secondary" onClick={() => navigate('/')}>Retour à l'accueil</Button>
                     </div>
-                    <button className="add-storage-button" onClick={handleSubscriptionRedirect}>
-                        Augmenter votre stockage
-                    </button>
                 </div>
-            </div>
+            ) : (
+                <>
+                    <SubscriptionInfo 
+                        storageLimitInGB={storageLimitInGB}
+                        storageUsedInGB={storageUsedInGB}
+                        storagePercentage={storagePercentage}
+                        handleSubscriptionRedirect={handleSubscriptionRedirect}
+                    />
 
-            <div className="file-list-section">
-                <h2 className="dashboard-title">Mes Fichiers</h2>
-                <div className="file-list-header">
-                    <span>Nom</span>
-                    <span>Date d'ajout</span>
-                    <span>Taille</span>
-                    <span>Actions</span>
-                </div>
-                <div className="file-list">
-                    {files.length > 0 ? (
-                        files.map((file) => (
-                            <div key={file.file_id} className="file-card">
-                                <img src="/img/file-icon.png" alt="file" className="file-icon" />
-                                <span className="file-name" onClick={() => handleView(file.file_id)} style={{ cursor: 'pointer', color: '#038A8A' }}>
-                                    {file.file_name}
-                                </span>
-                                <span className="file-date">{new Date(file.file_date).toLocaleString()}</span>
-                                <span className="file-size">{bytesToMegabytes(file.file_size)} Mo</span>
-                                <span className="file-actions">
-                                    <img 
-                                        src="/img/delete-icon.png" 
-                                        alt="delete" 
-                                        className="action-icon" 
-                                        onClick={(e) => { e.stopPropagation(); handleDelete(file.file_id); }} 
-                                    />
-                                    <img 
-                                        src="/img/download-icon.png" 
-                                        alt="download" 
-                                        className="action-icon" 
-                                        onClick={(e) => { e.stopPropagation(); handleDownload(file.file_id); }} 
-                                    />
-                                </span>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="no-files-message">Aucun fichier trouvé.</p>
-                    )}
-                </div>
-            </div>
+                    <SearchFilterBar setSearchTerm={setSearchTerm} setSelectedFileType={setSelectedFileType} />
 
-            <div className="add-file-button-container">
-                <button className="add-file-button" onClick={handleShowModal}>+</button>
-            </div>
+                    <FileList 
+                        filteredFiles={filteredFiles}
+                        handleSort={handleSort}
+                        handleDelete={handleDelete}
+                        handleDownload={handleDownload}
+                        handleView={handleView}
+                    />
 
-            {/* Modal pour l'upload de fichier */}
-            <Modal show={showModal} onHide={handleCloseModal} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Ajouter un fichier</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="upload-container">
-                        <label htmlFor="file-upload" className="upload-label">
-                            Déposer vos fichiers ici ou cliquer pour télécharger
-                        </label>
-                        <input 
-                            id="file-upload" 
-                            type="file" 
-                            onChange={handleFileUpload} 
-                            style={{ display: 'none' }} 
-                        />
+                    <div className="add-file-button-container">
+                        <button className="add-file-button" onClick={handleShowModal}>+</button>
                     </div>
-                    <p className="upload-info">Taille maximum : 300 Mo</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>Fermer</Button>
-                </Modal.Footer>
-            </Modal>
+
+                    <UploadModal showModal={showModal} handleCloseModal={handleCloseModal} handleFileUpload={handleFileUpload} />
+                </>
+            )}
         </div>
     );
 };
