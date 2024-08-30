@@ -62,7 +62,7 @@ exports.GetSubscription = async (req, res) => {
         const subscription = await Subscription.findOne({ where: { user_id: user_id } });
         if (!subscription) {
             console.log('Abonnement non trouvé');
-            return res.status(401).json('Abonnement non trouvé');
+            return res.status(201).json('Abonnement non trouvé');
         }
         console.log('Abonnement trouvé avec succès');
         res.status(200).json(subscription);

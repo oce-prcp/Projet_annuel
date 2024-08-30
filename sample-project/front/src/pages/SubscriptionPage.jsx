@@ -9,32 +9,46 @@ const SubscriptionPage = () => {
 
     useEffect(() => {
         // Fonction pour récupérer l'ID utilisateur après le montage du composant
-        const fetchUserId = async () => {
+        const fetchUserData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/user/getUserId', { withCredentials: true });
-                setUserId(response.data.userId);
+                const userIdResponse = await axios.get('http://localhost:8000/user/getUserId', { withCredentials: true });
+                const userId = userIdResponse.data.userId;
+                setUserId(userId);
+    
             } catch (error) {
-                console.error('Erreur lors de la récupération de l\'ID utilisateur:', error);
+                console.error('Erreur lors de la récupération des données utilisateur:', error);
             }
         };
-
-        fetchUserId();
+    
+        fetchUserData();
     }, []);
 
     const handleSubscription = async () => {
-
         try {
             if (!userId) {
                 alert('User ID non trouvé. Veuillez vous connecter à nouveau.');
                 return;
             }
 
-            const response = await axios.put(
-                'http://localhost:8000/subscription/update',
-                { user_id: userId }
-            );
-            console.log(response.data);
-            alert('Espace de stockage acheté avec succès.');
+            const subscriptionResponse = await axios.get(`http://localhost:8000/subscription/get/${userId}`);
+
+            if (subscriptionResponse.status === 201) {
+                const subscriptionResponse = await axios.post(
+                    'http://localhost:8000/subscription/create', 
+                    { user_id: userId, price: 20, date: new Date() }
+                );
+                console.log('Subscription created:', subscriptionResponse.data);
+            } else {
+                const response = await axios.put(
+                    'http://localhost:8000/subscription/update',
+                    { user_id: userId }
+                );
+                console.log(response.data);
+                alert('Espace de stockage acheté avec succès.');
+            }
+
+            window.location.href = '/';
+
         } catch (error) {
             console.error('Erreur lors de la mise à jour de l\'abonnement:', error);
             alert('Erreur lors de l\'achat de l\'espace de stockage.');
