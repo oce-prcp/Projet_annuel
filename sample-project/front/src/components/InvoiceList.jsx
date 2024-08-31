@@ -32,10 +32,6 @@ const InvoiceList = () => {
         fetchUserData();
     }, []);
 
-    if (userId) {
-        return <p>Chargement en cours...</p>;
-    }
-
     return (
         <Card>
             <Card.Header>Liste des factures</Card.Header>

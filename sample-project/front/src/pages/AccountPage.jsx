@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ErrorPage from './ErrorPage';
 import InvoiceList from '../components/InvoiceList';
 import { Button } from 'react-bootstrap';
 import AccountDelete from '../components/AccountDelete';
@@ -27,7 +28,11 @@ const AccountPage = () => {
     };
 
     if (!userId) {
-        return <p>Chargement en cours...</p>;
+        return(
+            <>
+                <ErrorPage />
+            </>
+        )   
     }
     else {
         return (
