@@ -20,8 +20,8 @@ const AccountDelete = () => {
 
     const handleDeleteAccount = async () => {
         try {
-            Cookies.remove('auth_token', {path: '/', domain: 'localhost'});
             const response = await axios.get(`http://localhost:8000/user/delete/${userId}`, { withCredentials: true });
+            Cookies.remove('auth_token', {path: '/', domain: 'localhost'});
             console.log('Compte supprimé:', response.data);
             window.location.href = '/';
         } catch (error) {

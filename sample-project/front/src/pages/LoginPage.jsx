@@ -71,6 +71,7 @@ const LoginPage = () => {
                 if (subscriptionResponse.status === 200) {
                     window.location.href = '/';
                 } else {
+                    alert('Vous n\'avez pas d\'abonnement en cours. Veuillez vous abonner.');
                     window.location.href = '/subscription';
                 }
             }

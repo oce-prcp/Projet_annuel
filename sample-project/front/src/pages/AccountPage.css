@@ -1,0 +1,36 @@
+
+
+div.invoice-section{
+    width: 80%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.invoice-title {
+    padding-left: 10px;
+}
+
+.invoice-list-header th{
+    padding: 10px 0;
+    border-bottom: 2px solid #ddd;
+    font-weight: bold;
+    color: #038A8A;
+}
+div.table-responsive table tbody.invoice-item tr td{
+    --bs-table-bg-type: rgb(0 0 0 / 0%);
+}
+
+button.button-invoice{
+    border: none;
+    background: unset;
+}
+
+.account-delete{
+    width: 30%;
+    margin: 0 auto;
+}

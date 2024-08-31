@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Table } from "react-bootstrap";
 import InvoiceCard from "./InvoiceCard";
+import { Button } from 'react-bootstrap';
+import AccountDelete from '../components/AccountDelete';
 import axios from "axios";
+import Cookies from 'js-cookie';
 
 const InvoiceList = () => {
     const [userId, setUserId] = useState(null);
@@ -32,28 +35,54 @@ const InvoiceList = () => {
         fetchUserData();
     }, []);
 
-    return (
-        <Card>
-            <Card.Header>Liste des factures</Card.Header>
-            <Card.Body className="d-flex" style={{ gap: '1%' }}>
-                {invoices.length > 0 ? (
-                    invoices.map((invoice) => (
-                        <InvoiceCard
-                            key={invoice.invoice_id}
-                            invoiceId={invoice.invoice_id}
-                            userId={userId}
-                            userName={userName}
-                            userFirstName={userFirstName}
-                            userAddress={userAddress}
-                            invoiceDate={invoice.createdAt}
-                        />
-                    ))
-                ) : (
-                    <p>Aucune facture trouvée.</p>
-                )}
-            </Card.Body>
-        </Card>
-    );
-}
+    const logout = async () => {
+        Cookies.remove('auth_token', {path: '/', domain: 'localhost'});
+        window.location.href = '/login';
+    };
 
-export default InvoiceList;
+        return (
+            <>
+                <Card className="invoice-section">
+                    <h2 className="invoice-title">Liste des factures</h2>
+                    <Card.Body>
+                        {invoices.length > 0 ? (
+                            <Table striped hover responsive>
+                                <thead>
+                                    <tr className="invoice-list-header">
+                                        <th>ID de la Facture</th>
+                                        <th>Date</th>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                        <th>Adresse</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="invoice-item"> 
+                                    {invoices.map((invoice) => (
+                                        <InvoiceCard
+                                            key={invoice.invoice_id}
+                                            invoiceId={invoice.invoice_id}
+                                            userId={userId}
+                                            userName={userName}
+                                            userFirstName={userFirstName}
+                                            userAddress={userAddress}
+                                            invoiceDate={invoice.createdAt}
+                                        />
+                                    ))}
+                                </tbody>
+                            </Table>
+                        ) : (
+                            <p>Aucune facture trouvée.</p>
+                        )}
+                    </Card.Body>
+                    <div className="account-delete">
+                        <AccountDelete />
+                        <Button onClick={logout} variant="danger">Déconnexion</Button>
+                    </div>
+                </Card>
+            </>
+        );
+    };
+    
+    
+export default InvoiceList

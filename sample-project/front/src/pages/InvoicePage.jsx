@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ErrorPage from './ErrorPage';
 import InvoiceList from '../components/InvoiceList';
-import { Button } from 'react-bootstrap';
-import AccountDelete from '../components/AccountDelete';
-import Cookies from 'js-cookie';
 import axios from 'axios';
+import './AccountPage.css';
 
-const AccountPage = () => {
+const InvoicePage = () => {
 
     const [userId, setUserId] = useState(null);
     useEffect(() => {
@@ -22,11 +20,6 @@ const AccountPage = () => {
         fetchUserData();
     }, []);
 
-    const logout = async () => {
-        Cookies.remove('auth_token', {path: '/', domain: 'localhost'});
-        window.location.href = '/login';
-    };
-
     if (!userId) {
         return(
             <>
@@ -38,11 +31,9 @@ const AccountPage = () => {
         return (
             <>
                 <InvoiceList />
-                <AccountDelete />
-                <Button onClick={logout} variant="danger">Déconnexion</Button>
             </>
         );
     }
 };
 
-export default AccountPage;
+export default InvoicePage;

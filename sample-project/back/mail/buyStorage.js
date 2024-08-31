@@ -20,7 +20,7 @@ const mailBodyStoragePurchase = (firstname) => {
                             <a href="${process.env.FRONTEND_URL}/subscription" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
                                 Acheter plus de stockage
                             </a>
-                            <a href="${process.env.FRONTEND_URL}/" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px;">
+                            <a href="${process.env.FRONTEND_URL}/dashboard" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px;">
                                 Uploader des fichiers maintenant
                             </a>
                         </div>
