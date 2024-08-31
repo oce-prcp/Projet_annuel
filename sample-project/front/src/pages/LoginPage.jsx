@@ -25,7 +25,7 @@ const LoginPage = () => {
             const userId = userIdResponse.data.userId;
             console.log('User ID:', userId);
             if (userId){
-                const subscriptionResponse = await axios.get(`http://localhost:8000/subscription/get/${userId}`);
+                const subscriptionResponse = await axios.get(`http://localhost:8000/subscription/get/${userId}`, { withCredentials: true });
                 if (subscriptionResponse.status === 200) {
                     window.location.href = '/';
                 }
@@ -43,7 +43,7 @@ const LoginPage = () => {
         try {
             const response = await axios.post(
                 'http://localhost:8000/user/signup', 
-                { email: userEmail, password: password, name: name, firstname: firstname, phone: phone, adress: adress }
+                { email: userEmail, password: password, name: name, firstname: firstname, phone: phone, adress: adress }, { withCredentials: true }
             );
             console.log(response.data);
             alert('Compte créé avec succès, veuillez vous connecter.');

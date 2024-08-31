@@ -132,7 +132,6 @@
 
     exports.DeleteUser = async (req, res) => {
         const { user_id } = req.params;
-        res.clearCookie("auth_token");
 
         if (!user_id) {
             console.log('Utilisateur non trouvé');

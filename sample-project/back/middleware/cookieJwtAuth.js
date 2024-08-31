@@ -1,19 +1,21 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/modelUser')
+const jwt = require('jsonwebtoken');
+const User = require('../models/modelUser');
+require('dotenv').config();
 
 exports.user = (req, res, next) => {
-    const token = req.cookies.token
+    const token = req.cookies.auth_token;
     if (!token) {
-        return res.status(401).send('Accès refusé')
+        return res.status(401).send('Aucun token');
     }
     try {
-        const verified = jwt.verify(token, process.env.TOKEN_SECRET)
-        req.user = verified
-        next()
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = verified;
+        next();
     } catch (err) {
-        res.status(400).send('Token invalide')
+        console.error('Erreur lors de la vérification du token:', err);
+        return res.status(400).send('Token invalide');
     }
-}
+};
 
 exports.admin = async (req, res, next) => {
     const token = req.cookies.auth_token;
@@ -24,14 +26,16 @@ exports.admin = async (req, res, next) => {
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         req.user = verified;
 
-        const user = await User.findOne({ where: { id: verified.id } });  // Adjust the query based on your ORM
+        // Assurez-vous que cette requête est correcte pour votre ORM
+        const user = await User.findOne({ where: { user_id: verified.id } });
 
-        if (user && user.type === 'admin') {
+        if (user && user.user_type === 'admin') {
             next();
         } else {
-            res.status(401).send('Accès refusé');  // Deny access if the user is not an admin
+            return res.status(401).send('Accès refusé pour les utilisateurs non-admin');
         }
     } catch (err) {
-        res.status(400).send('Token invalide');  // Handle any errors in token verification
+        console.error('Erreur lors de la vérification de l\'admin:', err);
+        return res.status(500).send('Erreur interne du serveur'); // Utiliser un message générique en production
     }
-}
+};
