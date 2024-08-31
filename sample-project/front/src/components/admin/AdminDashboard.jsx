@@ -10,7 +10,7 @@ import UserList from './UserList';
 import FileList from './FileList';
 import FileModal from './FileModal';
 import UserModal from './UserModal';
-import SearchBar from './SearchBar'; // Importer le nouveau composant
+import SearchBar from './SearchBar';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -55,7 +55,7 @@ const AdminDashboard = () => {
 
     const fetchUserDetailsLog = async (userId) => {
         try {
-            const userDetailResponse = await axios.get(`http://localhost:8000/user/get/${userId}`);
+            const userDetailResponse = await axios.get(`http://localhost:8000/user/get/${userId}`, { withCredentials: true });
             const userRole = userDetailResponse.data.user_type;
             if (userRole !== 'admin') {
                 navigate('/');
@@ -70,26 +70,26 @@ const AdminDashboard = () => {
 
     const fetchAdminStats = async () => {
         try {
-            const subscriptionStatsResponse = await axios.get('http://localhost:8000/subscription/stats');
+            const subscriptionStatsResponse = await axios.get('http://localhost:8000/subscription/stats', { withCredentials: true });
             setTotalStorage(subscriptionStatsResponse.data.totalStorage);
             setTotalRevenue(subscriptionStatsResponse.data.totalRevenue);
 
-            const storageResponse = await axios.get('http://localhost:8000/user/storage/total');
+            const storageResponse = await axios.get('http://localhost:8000/user/storage/total', { withCredentials: true });
             setTotalStorageUsed(storageResponse.data.totalStorageUsed);
 
-            const userCountResponse = await axios.get('http://localhost:8000/user/stats/count');
+            const userCountResponse = await axios.get('http://localhost:8000/user/stats/count', { withCredentials: true });
             setTotalUsers(userCountResponse.data.totalUsers);
 
-            const fileCountResponse = await axios.get('http://localhost:8000/files/stats/allFiles');
+            const fileCountResponse = await axios.get('http://localhost:8000/files/stats/allFiles', { withCredentials: true });
             setTotalFiles(fileCountResponse.data.totalFiles);
 
-            const filesTodayResponse = await axios.get('http://localhost:8000/files/stats/today');
+            const filesTodayResponse = await axios.get('http://localhost:8000/files/stats/today', { withCredentials: true });
             setFilesUploadedToday(filesTodayResponse.data.filesUploadedToday);
 
-            const usersResponse = await axios.get('http://localhost:8000/user/getall');
+            const usersResponse = await axios.get('http://localhost:8000/user/getall', { withCredentials: true });
             setUsers(usersResponse.data);
 
-            const filesResponse = await axios.get('http://localhost:8000/files/all');
+            const filesResponse = await axios.get('http://localhost:8000/files/all', { withCredentials: true });
             setFiles(filesResponse.data);
         } catch (error) {
             console.error('Error fetching admin stats:', error);
@@ -100,7 +100,7 @@ const AdminDashboard = () => {
         const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer ce fichier ?");
         if (confirmDelete) {
             try {
-                await axios.delete(`http://localhost:8000/files/${fileId}`);
+                await axios.delete(`http://localhost:8000/files/${fileId}`, { withCredentials: true });
                 setFiles(prevFiles => prevFiles.filter(file => file.file_id !== fileId));
                 const fileToDelete = files.find(file => file.file_id === fileId);
                 const updatedStorageUsed = totalStorageUsed - fileToDelete.file_size;
@@ -114,7 +114,7 @@ const AdminDashboard = () => {
     const handleDownload = (fileId) => {
         const confirmDownload = window.confirm("Êtes-vous sûr de vouloir télécharger ce fichier ?");
         if (confirmDownload) {
-            window.open(`http://localhost:8000/files/download/${fileId}`, '_blank');
+            window.open(`http://localhost:8000/files/download/${fileId}`, { withCredentials: true }, '_blank');
         }
     };
 
@@ -130,18 +130,18 @@ const AdminDashboard = () => {
             return;
         }
 
-        setIframeSrc(`http://localhost:8000/files/see/${fileId}`);
+        setIframeSrc(`http://localhost:8000/files/see/${fileId}`, { withCredentials: true });
         setShowModal(true);
     };
 
     const fetchUserDetails = async (userId) => {
         try {
-            const userDetailResponse = await axios.get(`http://localhost:8000/user/get/${userId}`);
-            const userFileCountResponse = await axios.get(`http://localhost:8000/files/stats/count/${userId}`);
+            const userDetailResponse = await axios.get(`http://localhost:8000/user/get/${userId}`, { withCredentials: true });
+            const userFileCountResponse = await axios.get(`http://localhost:8000/files/stats/count/${userId}`, { withCredentials: true });
             
             let subscriptionDetails = null;    
             try {
-                const subscriptionResponse = await axios.get(`http://localhost:8000/subscription/get/${userId}`);
+                const subscriptionResponse = await axios.get(`http://localhost:8000/subscription/get/${userId}`, { withCredentials: true });
                 subscriptionDetails = subscriptionResponse.data; 
             } catch (error) {
                 if (error.response && error.response.status === 401) {

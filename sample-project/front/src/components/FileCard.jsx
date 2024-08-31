@@ -37,7 +37,7 @@ const FileCard = ({ file, handleDelete, handleDownload, handleView }) => {
             return;
         }
 
-        setIframeSrc(`http://localhost:8000/files/see/${fileId}`);
+        setIframeSrc(`http://localhost:8000/files/see/${fileId}`, { withCredentials: true });
         setShowModal(true);
     };
 
