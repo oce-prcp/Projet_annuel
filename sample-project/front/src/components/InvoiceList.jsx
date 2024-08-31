@@ -17,12 +17,12 @@ const InvoiceList = () => {
                 const userId = userResponse.data.userId;
                 setUserId(userId);
 
-                const responseUser = await axios.get(`http://localhost:8000/user/get/${userId}`);
+                const responseUser = await axios.get(`http://localhost:8000/user/get/${userId}`, { withCredentials: true });
                 setUserName(responseUser.data.user_name);
                 setUserFirstName(responseUser.data.user_first_name);
                 setUserAddress(responseUser.data.user_address);
 
-                const invoiceResponse = await axios.get(`http://localhost:8000/invoice/getAll/${userId}`);
+                const invoiceResponse = await axios.get(`http://localhost:8000/invoice/getAll/${userId}`, { withCredentials: true });
                 setInvoices(invoiceResponse.data);
             } catch (error) {
                 console.error('Erreur lors de la récupération des données:', error);
@@ -31,6 +31,10 @@ const InvoiceList = () => {
 
         fetchUserData();
     }, []);
+
+    if (userId) {
+        return <p>Chargement en cours...</p>;
+    }
 
     return (
         <Card>

@@ -19,6 +19,7 @@ const Dashboard = () => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedFileType, setSelectedFileType] = useState('All');
+    const [userRole, setUserRole] = useState('');
 
     const navigate = useNavigate();
 
@@ -36,21 +37,22 @@ const Dashboard = () => {
             setUserId(userId);
             fetchData(userId);
         } catch (error) {
-            alert('Vous ne semblez pas ou plus connecté. Veuillez vous connecter avant d\'accéder à votre dashboard.');
             navigate('/');
         }
     };
 
     const fetchData = async (userId) => {
         try {
-            const subscriptionResponse = await axios.get(`http://localhost:8000/subscription/get/${userId}`);
+            const subscriptionResponse = await axios.get(`http://localhost:8000/subscription/get/${userId}`, { withCredentials: true });
             setSubscription(subscriptionResponse.data);
             setStorageLimit(subscriptionResponse.data.subscription_storage_space);
 
-            const fileResponse = await axios.get(`http://localhost:8000/files/user/${userId}`);
+            const fileResponse = await axios.get(`http://localhost:8000/files/user/${userId}`, { withCredentials: true });
             setFiles(fileResponse.data);
 
-            const userDetailsResponse = await axios.get(`http://localhost:8000/user/get/${userId}`);
+            const userDetailsResponse = await axios.get(`http://localhost:8000/user/get/${userId}`, { withCredentials: true });
+            setUserRole(userDetailsResponse.data.user_type);
+            console.log(userDetailsResponse.data.user_type);
             setStorageUsed(userDetailsResponse.data.user_storage_space_used);
 
         } catch (error) {
@@ -111,7 +113,7 @@ const Dashboard = () => {
         const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer ce fichier ?");
         if (confirmDelete) {
             try {
-                await axios.delete(`http://localhost:8000/files/${fileId}`);
+                await axios.delete(`http://localhost:8000/files/${fileId}`, { withCredentials: true });
                 setFiles(prevFiles => prevFiles.filter(file => file.file_id !== fileId));
                 const updatedStorageUsed = storageUsed - files.find(file => file.file_id === fileId).file_size;
                 setStorageUsed(updatedStorageUsed);
@@ -124,12 +126,12 @@ const Dashboard = () => {
     const handleDownload = (fileId) => {
         const confirmDownload = window.confirm("Êtes-vous sûr de vouloir télécharger ce fichier ?");
         if (confirmDownload) {
-            window.open(`http://localhost:8000/files/download/${fileId}`, '_blank');
+            window.open(`http://localhost:8000/files/download/${fileId}`, { withCredentials: true });
         }
     };
 
     const handleView = (fileId) => {
-        window.open(`http://localhost:8000/files/see/${fileId}`, '_blank');
+        window.open(`http://localhost:8000/files/see/${fileId}`, { withCredentials: true });
     };
 
     const handleShowModal = () => setShowModal(true);
@@ -147,7 +149,7 @@ const Dashboard = () => {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
-                });
+                }, { withCredentials: true });
 
                 await fetchUserId(); 
                 setShowModal(false); 
@@ -161,6 +163,11 @@ const Dashboard = () => {
     const handleSubscriptionRedirect = () => {
         navigate('/subscription');
     };
+
+    const handleAdminRedirect = () => {
+        navigate('/admin');
+    };
+
     return (
         <div className="dashboard">
             {subscriptionError ? (
@@ -191,8 +198,11 @@ const Dashboard = () => {
                         handleView={handleView}
                     />
 
-                    <div className="add-file-button-container">
+                    <div className="action-buttons-container">
                         <button className="add-file-button" onClick={handleShowModal}>+</button>
+                        {userRole === 'admin' && (
+                            <button className="add-file-button" onClick={handleAdminRedirect}>😎</button>
+                        )}
                     </div>
 
                     <UploadModal showModal={showModal} handleCloseModal={handleCloseModal} handleFileUpload={handleFileUpload} />
