@@ -9,18 +9,8 @@ const LoginPage = () => {
     const [firstname, setFirstname] = useState('');
     const [phone, setPhone] = useState('');
     const [adress, setAdress] = useState('');
-    const [isSignUp, setIsSignUp] = useState(false); // État pour gérer la vue (connexion ou inscription)
-    /*const [userId, setUserId] = useState(null);
-    const getUserId = async () => {
-        try {
-            const response = await axios.get('http://localhost:8000/user/getId', { withCredentials: true });
-            console.log(response.data);
-            setUserId(response.data.userId);
-        } catch (error) {
-            console.error(error);
-        }
-    };*/
-    
+    const [isSignUp, setIsSignUp] = useState(false);
+   
     const handleLogin = async () => {
         try {
             // Effectuer la connexion
@@ -34,29 +24,26 @@ const LoginPage = () => {
             const userIdResponse = await axios.get('http://localhost:8000/user/getUserId', { withCredentials: true });
             const userId = userIdResponse.data.userId;
             console.log('User ID:', userId);
-
-            if (userId) {
-                const subscriptionResponse = await axios.post(
-                    'http://localhost:8000/subscription/create', 
-                    { user_id: userId, price: 20, date: new Date() }
-                );
-                console.log('Subscription created:', subscriptionResponse.data);
-            } else {
-                console.error('User ID not found after login.');
+            if (userId){
+                const subscriptionResponse = await axios.get(`http://localhost:8000/subscription/get/${userId}`, { withCredentials: true });
+                if (subscriptionResponse.status === 200) {
+                    window.location.href = '/';
+                }
+                else {
+                    window.location.href = '/subscription';
+                }
             }
 
-            window.location.href = '/';
         } catch (error) {
-            console.error('Error during login or subscription creation:', error);
-            alert('Email ou mot de passe incorrect');
+            alert('Erreur lors de la connexion.' + error);
         }
-    };
+    }
 
     const handleSignUp = async () => {
         try {
             const response = await axios.post(
                 'http://localhost:8000/user/signup', 
-                { email: userEmail, password: password, name: name, firstname: firstname, phone: phone, adress: adress }
+                { email: userEmail, password: password, name: name, firstname: firstname, phone: phone, adress: adress }, { withCredentials: true }
             );
             console.log(response.data);
             alert('Compte créé avec succès, veuillez vous connecter.');
