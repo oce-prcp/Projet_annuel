@@ -23,6 +23,10 @@ router.get('/details/:fileId', fileController.getFileDetails);
 router.delete('/:fileId', fileController.deleteFile);
 router.get('/user/:userId', fileController.getUserFiles);
 router.get('/all', fileController.getAllFiles);
+router.get('/download/:fileId', fileController.downloadFile);
+router.get('/stats/allFiles', fileController.getTotalFileCount);
+router.get('/stats/count/:userId', fileController.getTotalFileCountUser);
+router.get('/stats/today', fileController.getFilesUploadedToday);
 
 
 module.exports = router;

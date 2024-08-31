@@ -19,7 +19,7 @@ const File = sequelize.define('Files', {
         allowNull: false
     },
     file_size: {
-        type: DataTypes.DECIMAL(10, 2),
+        type: DataTypes.DOUBLE(25,2),
         allowNull: false
     },
     file_date: {

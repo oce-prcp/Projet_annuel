@@ -226,3 +226,35 @@
         }
     }
 
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.findAll();
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs' });
+    }
+};
+
+exports.getTotalUserCount = async (req, res) => {
+    try {
+        const totalUsers = await User.count();
+        res.status(200).json({ totalUsers });
+    } catch (error) {
+        console.error('Erreur lors de la récupération du nombre total d\'utilisateurs:', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération du nombre total d\'utilisateurs' });
+    }
+};
+
+exports.GetTotalStorageUsed = async (req, res) => {
+    try {
+        const users = await User.findAll();
+        const totalStorageUsed = users.reduce((acc, user) => acc + user.user_storage_space_used, 0);
+
+        res.status(200).json({ totalStorageUsed });
+    } catch (error) {
+        console.error('Erreur lors de la récupération du stockage total utilisé:', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération du stockage total utilisé' });
+    }
+};
