@@ -7,6 +7,7 @@ import SubscriptionPage from './pages/SubscriptionPage';
 import LoginPage from './pages/LoginPage';
 import AccountPage from './pages/AccountPage'
 import DashboardPage from "./pages/DashboardPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/subscription" element={<SubscriptionPage />} />
           <Route path ="/account" element={<AccountPage />} />
           <Route path ="/dashboard" element={<DashboardPage />} />
+          <Route path ="/admin" element={<AdminDashboardPage />} />
         </Routes>
       </BrowserRouter>
     </>

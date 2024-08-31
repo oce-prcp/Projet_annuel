@@ -88,4 +88,15 @@ exports.DeleteSubscription = async (req, res) => {
     }
 }
 
+exports.GetSubscriptionStats = async (req, res) => {
+    try {
+        const subscriptions = await Subscription.findAll();
+        const totalStorage = subscriptions.reduce((acc, sub) => acc + sub.subscription_storage_space, 0);
+        const totalRevenue = subscriptions.reduce((acc, sub) => acc + sub.subscription_price, 0);
 
+        res.status(200).json({ totalStorage, totalRevenue });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des statistiques des abonnements:', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération des statistiques des abonnements' });
+    }
+};

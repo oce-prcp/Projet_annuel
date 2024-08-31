@@ -19,6 +19,7 @@ const Dashboard = () => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedFileType, setSelectedFileType] = useState('All');
+    const [userRole, setUserRole] = useState('');
 
     const navigate = useNavigate();
 
@@ -36,7 +37,6 @@ const Dashboard = () => {
             setUserId(userId);
             fetchData(userId);
         } catch (error) {
-            alert('Vous ne semblez pas ou plus connecté. Veuillez vous connecter avant d\'accéder à votre dashboard.');
             navigate('/');
         }
     };
@@ -51,6 +51,8 @@ const Dashboard = () => {
             setFiles(fileResponse.data);
 
             const userDetailsResponse = await axios.get(`http://localhost:8000/user/get/${userId}`);
+            setUserRole(userDetailsResponse.data.user_type);
+            console.log(userDetailsResponse.data.user_type);
             setStorageUsed(userDetailsResponse.data.user_storage_space_used);
 
         } catch (error) {
@@ -161,6 +163,11 @@ const Dashboard = () => {
     const handleSubscriptionRedirect = () => {
         navigate('/subscription');
     };
+
+    const handleAdminRedirect = () => {
+        navigate('/admin');
+    };
+
     return (
         <div className="dashboard">
             {subscriptionError ? (
@@ -191,8 +198,11 @@ const Dashboard = () => {
                         handleView={handleView}
                     />
 
-                    <div className="add-file-button-container">
+                    <div className="action-buttons-container">
                         <button className="add-file-button" onClick={handleShowModal}>+</button>
+                        {userRole === 'admin' && (
+                            <button className="add-file-button" onClick={handleAdminRedirect}>😎</button>
+                        )}
                     </div>
 
                     <UploadModal showModal={showModal} handleCloseModal={handleCloseModal} handleFileUpload={handleFileUpload} />
