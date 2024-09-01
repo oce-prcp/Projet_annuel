@@ -155,7 +155,7 @@ const Invoice = ({ invoiceId, userId, userAddress, invoiceDate, userName, userFi
                     {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.2).toFixed(2)}
                 </Text>
                 <Text>
-                    {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.74).toFixed(2)}
+                    {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.8).toFixed(2)}
                 </Text>
                 <Text>
                     {reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0).toFixed(2)}

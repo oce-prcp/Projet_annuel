@@ -1,0 +1,66 @@
+.button-buy {
+  background-color: #038A8A;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.page-container {
+  width: 100%;
+  margin: unset;
+  padding: unset;
+  display: flex;
+  max-width: -webkit-fill-available;
+}
+.payement-container {
+  display: flex;
+  flex-direction: column;
+  padding: 2% 2% 5% 5%
+}
+
+.payement-element {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: -webkit-fill-available;
+}
+
+.payement-header{
+    width: 100%;
+}
+
+.payement-card{
+    width: 100%;
+}
+
+.product-container {
+  background-color: #a0e0e0;
+  width: 80%;
+}
+
+.product-detail{
+    padding: 7% 10% 0% 5%;
+    top: 10px; /* Adjust this value as needed */
+    position:sticky;
+}
+
+.cb-short-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.cb-short-info div {
+    width: 50%;
+}
+
+.form-check-input:checked {
+  background-color: #038A8A;
+  border-color: #038A8A;
+}
+
+.form-control {
+  height: 55px;
+}
