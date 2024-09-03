@@ -91,7 +91,7 @@ const LoginPage = () => {
                                     <a className="nav-link" href="/" style={{ color: textColor }}>Pourquoi Data Save ?</a>
                                 </li>   
                             </ul>
-                            <a className="btn btn-outline-light" href="/login" style={{ backgroundColor: '#038A8A', color: 'white', borderColor: textColor }}>
+                            <a className="btn btn-outline-light" href="/login" style={{ backgroundColor: '#038A8A', color: 'white'}}>
                                 Se connecter
                             </a>
                         </div>
@@ -156,11 +156,11 @@ const LoginPage = () => {
                             </>
                         ) : ("") }
                         {isSignUp ? (
-                            <Button variant="primary" type="button" onClick={handleSignUp} className='mt-3' style={{ backgroundColor: '#038A8A', color: 'white', borderColor: textColor }}>
+                            <Button variant="primary" type="button" onClick={handleSignUp} className='mt-3' style={{ backgroundColor: '#038A8A', color: 'white', borderColor: '#038A8A' }}>
                                 Créer un compte
                             </Button>
                         ) : (
-                            <Button variant="primary" type="button" onClick={handleLogin} className='mt-3' style={{ backgroundColor: '#038A8A', color: 'white', borderColor: textColor }}>
+                            <Button variant="primary" type="button" onClick={handleLogin} className='mt-3' style={{ backgroundColor: '#038A8A', color: 'white', borderColor: '#038A8A' }}>
                                 Se connecter
                             </Button>
                         )}
@@ -169,11 +169,11 @@ const LoginPage = () => {
                     <div className="mt-3" >
                         {isSignUp ? (
                             <p>
-                                Vous avez déjà un compte ?<Button variant="link" onClick={() => setIsSignUp(false)} style={{ color: textColor }}>Se connecter</Button>
+                                Vous avez déjà un compte ?<Button variant="link" onClick={() => setIsSignUp(false)} style={{ color: 'black' }}>Se connecter</Button>
                             </p>
                         ) : (
                             <p>
-                                Pas de compte ? <Button variant="link" onClick={() => setIsSignUp(true)} style={{ color: textColor }}>Créer un compte</Button>
+                                Pas de compte ? <Button variant="link" onClick={() => setIsSignUp(true)} style={{ color: 'black' }}>Créer un compte</Button>
                             </p>
                         )}
                     </div>
