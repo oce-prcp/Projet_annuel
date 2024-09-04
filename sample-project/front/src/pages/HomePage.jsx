@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logo from '../../img/logo_data-save.png';
-import logoScrolled from '../../img/logo-datasave.png'; 
-import banner from '../../img/banner_home.png'; 
-import footerLogo from '../../img/logo_datasave.png'; 
+import logoScrolled from '../../img/logo-datasave.png';
+import banner from '../../img/banner_home.png';
+import footerLogo from '../../img/logo_datasave.png';
 import { FaCloudUploadAlt, FaSyncAlt, FaLock } from 'react-icons/fa';
 import './HomePage.css';
 
