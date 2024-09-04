@@ -1,0 +1,58 @@
+.container-login {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  
+  }
+  
+  .container-reassurance {
+   border-left: 0.5px solid #e3eaea;
+  }
+  
+  .reassurance-header {
+   color: #475155;
+  }
+  
+  .login-header, .login-subheader {
+    text-align: center;
+  }
+  
+  .login-header {
+   color: #038A8A
+  }
+  
+  .login-subheader {
+    margin-bottom: 3%;
+    width: 80%;
+  }
+  
+  .login-form {
+      width: -webkit-fill-available;
+      padding: 0% 7%;
+  }
+  
+  .login-button{
+      background-color: #038A8A;
+  }
+  
+  .login-toggle{
+      color: #038A8A;
+      text-decoration: none
+  }
+  
+  .login-reassurance{
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: -webkit-fill-available;
+  }
+  
+  .login-reassurance li{
+      display: flex;
+      padding-bottom: 3%;
+  }
+  
+  .login-reassurance li div{
+      padding-left: 2%;
+  }
