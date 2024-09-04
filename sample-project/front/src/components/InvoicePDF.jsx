@@ -4,12 +4,16 @@ import logo from '../assets/logo_data_save.png';
 
 const Invoice = ({ invoiceId, userId, userAddress, invoiceDate, userName, userFirstName}) => {
 
+    const invoiceDateFormat = new Date(invoiceDate)
+    const formatDate = invoiceDateFormat.toLocaleDateString('fr-FR');
+    const formatTime = invoiceDateFormat.toLocaleTimeString('fr-FR');
+
     const reciept_data = {
         "id": "642be0b4bbe5d71a5341dfb1",
         "invoice_no": `${invoiceId}${userId}`,
         "address": userAddress,
         "name": `${userName} ${userFirstName}`,
-        "date": new Date(invoiceDate).toLocaleDateString('fr-FR'), // Format DD/MM/YYYY
+        "date": `${formatDate} à ${formatTime}` ,
         "items": [
             {
                 "id": 1,
@@ -151,7 +155,7 @@ const Invoice = ({ invoiceId, userId, userAddress, invoiceDate, userName, userFi
                     {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.2).toFixed(2)}
                 </Text>
                 <Text>
-                    {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.74).toFixed(2)}
+                    {(reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0) * 0.8).toFixed(2)}
                 </Text>
                 <Text>
                     {reciept_data.items.reduce((sum, item) => sum + (item.price * item.qty), 0).toFixed(2)}

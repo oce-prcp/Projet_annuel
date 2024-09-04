@@ -13,15 +13,16 @@ const mailBody = (firstname) => {
                         <p>Bonjour ${firstname},</p>
                         <p>Merci de rejoindre Data Save. Nous sommes ravis de vous avoir parmi nous.</p>
                         <div style="text-align: center; margin-top: 30px;">
-                            <a href="${process.env.FRONTEND_URL}/account" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
-                                Accéder à mon compte
+                            <a href="${process.env.FRONTEND_URL}/" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px;">
+                                Visiter notre site
+                            </a>
+                            <a href="${process.env.FRONTEND_URL}/dashboard" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
+                                Accéder à mes fichiers
                             </a>
                             <a href="${process.env.FRONTEND_URL}/subscription" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
                                 Effectuer un achat
                             </a>
-                            <a href="${process.env.FRONTEND_URL}/" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px;">
-                                Télécharger des fichiers
-                            </a>
+                            
                         </div>
                         <p style="margin-top: 20px;">Nous espérons que vous apprécierez notre service. Si vous avez des questions, n'hésitez pas à nous contacter.</p>
                         <p>Cordialement,<br>L'équipe Support</p>

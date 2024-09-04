@@ -17,8 +17,8 @@ const mailBodyAccountDeletion = (firstname) => {
                             <a href="${process.env.FRONTEND_URL}/" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
                                 Revenir à la page d'accueil
                             </a>
-                            <a href="${process.env.FRONTEND_URL}/" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px;">
-                                Contacter le support
+                            <a href="${process.env.FRONTEND_URL}/login" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px;">
+                                 Recréer un compte
                             </a>
                         </div>
                         <p style="margin-top: 20px;">Si vous avez des questions ou besoin d'assistance, n'hésitez pas à nous contacter.</p>
