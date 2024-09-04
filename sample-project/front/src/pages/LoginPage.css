@@ -31,13 +31,33 @@
       padding: 0% 7%;
   }
   
-  .login-button{
-      background-color: #038A8A;
+  .login-button {
+    background-color: #038A8A;
+    border: none;
+  }
+  
+  .login-button:hover {
+    background-color: #036F6F;
+    color: white;
+  }
+  
+  .login-button:focus {
+    outline: none;
+    box-shadow: none;
   }
   
   .login-toggle{
       color: #038A8A;
       text-decoration: none
+  }
+
+  .login-toggle:hover {
+    color: #038A8A;
+    text-decoration: underline;
+  }
+  
+  .login-toggle:focus {
+    outline: none;
   }
   
   .login-reassurance{
@@ -56,3 +76,25 @@
   .login-reassurance li div{
       padding-left: 2%;
   }
+
+  .container-login-page {
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+  
+  .login-card {
+    max-width: 600px;
+    width: 100%;
+    padding: 2rem;
+  }
+  
+  .login-form input {
+    max-width: 300px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
