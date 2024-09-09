@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Image, Text, View, Page, Document, StyleSheet } from '@react-pdf/renderer';
-import logo from '../assets/logo_data_save.png';
+import logo from '../assets/logo_sombre.png';
 
 const Invoice = ({ invoiceId, userId, userAddress, invoiceDate, userName, userFirstName}) => {
 
