@@ -13,7 +13,7 @@ const mailBody = (firstname) => {
                         <p>Bonjour ${firstname},</p>
                         <p>Merci de rejoindre Data Save. Nous sommes ravis de vous avoir parmi nous.</p>
                         <div style="text-align: center; margin-top: 30px;">
-                            <a href="${process.env.FRONTEND_URL}/" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px;">
+                            <a href="${process.env.FRONTEND_URL}/" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
                                 Visiter notre site
                             </a>
                             <a href="${process.env.FRONTEND_URL}/dashboard" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
