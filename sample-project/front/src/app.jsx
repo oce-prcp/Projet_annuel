@@ -10,6 +10,7 @@ import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import NavbarComponent from "./components/Navbar";
 import FooterComponent from "./components/Footer";
+import './App.css';
 
 function App() {
   return (
