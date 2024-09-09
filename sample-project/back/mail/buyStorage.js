@@ -14,7 +14,7 @@ const mailBodyStoragePurchase = (firstname) => {
                         <p>Nous vous confirmons que votre achat de <strong>20 Go</strong> d'espace de stockage supplémentaire a été effectué avec succès. Vous pouvez dès maintenant profiter de cet espace pour stocker plus de fichiers sur notre plateforme.</p>
                         <p>Vous pouvez consulter les détails de cette transaction et accéder à vos factures dans la section "Mon compte".</p>
                         <div style="text-align: center; margin-top: 30px;">
-                            <a href="${process.env.FRONTEND_URL}/account" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
+                            <a href="${process.env.FRONTEND_URL}/invoice" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
                                 Voir mes factures dans Mon compte
                             </a>
                             <a href="${process.env.FRONTEND_URL}/subscription" style="display: block; padding: 15px; background-color: #038A8A; color: #ffffff; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
