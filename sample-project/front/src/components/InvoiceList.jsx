@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table } from "react-bootstrap";
 import InvoiceCard from "./InvoiceCard";
-import { Button } from 'react-bootstrap';
 import AccountDelete from '../components/AccountDelete';
 import axios from "axios";
-import Cookies from 'js-cookie';
 
 const InvoiceList = () => {
     const [userId, setUserId] = useState(null);
@@ -35,10 +33,6 @@ const InvoiceList = () => {
         fetchUserData();
     }, []);
 
-    const logout = async () => {
-        Cookies.remove('auth_token', {path: '/', domain: 'localhost'});
-        window.location.href = '/login';
-    };
 
         return (
             <>
@@ -77,7 +71,6 @@ const InvoiceList = () => {
                     </Card.Body>
                     <div className="account-delete">
                         <AccountDelete />
-                        <Button onClick={logout} variant="danger">Déconnexion</Button>
                     </div>
                 </Card>
             </>

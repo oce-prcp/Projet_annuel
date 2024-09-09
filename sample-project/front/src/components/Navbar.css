@@ -1,0 +1,4 @@
+.navbar {
+    background-color: transparent;
+    transition: background-color 0.5s ease;
+}

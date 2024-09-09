@@ -8,11 +8,13 @@ import LoginPage from './pages/LoginPage';
 import InvoicePage from './pages/InvoicePage'
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import NavbarComponent from "./components/Navbar";
+import FooterComponent from "./components/Footer";
 
 function App() {
   return (
     <>    
-    
+      <NavbarComponent />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -23,6 +25,7 @@ function App() {
           <Route path ="/admin" element={<AdminDashboardPage />} />
         </Routes>
       </BrowserRouter>
+      <FooterComponent />
     </>
   );
 }
