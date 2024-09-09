@@ -8,8 +8,8 @@ const mailBodyStoragePurchase = require('../mail/buyStorage');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: "datasavecontact@gmail.com",
-        pass: "kqpr nhbq hupf lfeu"
+        user: process.env.EMAIL_CONTACT,
+        pass: process.env.EMAIL_PASSWORD
     }
 });
 
