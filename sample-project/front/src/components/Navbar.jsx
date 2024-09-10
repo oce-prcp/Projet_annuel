@@ -59,7 +59,7 @@ const NavbarComponent = () => {
                     </Navbar.Brand>
                     <Navbar.Collapse id="navbarNav" className="d-flex justify-content-end">
                         <Nav className="mr-auto">
-                            <Nav.Link href="/" style={{ color: textColor }}>Pourquoi Data Save ?</Nav.Link>
+                            <Nav.Link href="/#solutions" style={{ color: textColor }}>Pourquoi Data Save ?</Nav.Link>
                         </Nav>
                         {
                             userId ? (
@@ -67,6 +67,9 @@ const NavbarComponent = () => {
                                 <Button onClick={logout} variant="outline-light" style={{ backgroundColor: '#dc3545', color: 'white', marginLeft: "4px" }}>Déconnexion</Button>
                                 <Button href="/dashboard" variant="outline-light" style={{ backgroundColor: '#038A8A', color: 'white', marginLeft: "4px" }}>
                                     Dashboard
+                                </Button>
+                                <Button href="/invoice" variant="outline-light" style={{ backgroundColor: '#038A8A', color: 'white', marginLeft: "4px" }}>
+                                    Factures
                                 </Button>
                                 </>
                             ) : (

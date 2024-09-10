@@ -14,15 +14,15 @@ const FooterComponent = () => {
                             <div>
                                 <h5>Coordonnées</h5>
                                 <p>1337 Bachelor IPSSI <br />12e Paris</p>
-                                <p>01 02 03 04 <br />contact@datasave.com</p>
+                                <p>01 02 03 04 05<br />contact@datasave.com</p>
                             </div>
                         </div>
                         <div className="col-md-4">
                             <h5>Navigation</h5>
                             <ul className="list-unstyled">
                                 <li><a href="/" style={{ color: 'white', textDecoration: 'none' }}>Accueil</a></li>
-                                <li><a href="#solutions" style={{ color: 'white', textDecoration: 'none' }}>Solutions</a></li>
-                                <li><a href="#contact" style={{ color: 'white', textDecoration: 'none' }}>Contact</a></li>
+                                <li><a href="/dashboard" style={{ color: 'white', textDecoration: 'none' }}>Solution</a></li>
+                                <li><a href="/subscription" style={{ color: 'white', textDecoration: 'none' }}>S'abonner</a></li>
                             </ul>
                         </div>
                         <div className="col-md-4">
