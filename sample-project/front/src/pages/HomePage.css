@@ -25,10 +25,11 @@ body, html {
     /* font-family: Arial, sans-serif; Facultatif : définissez une police de caractère si besoin */
 }
 
+/*
 .navbar {
-    border-bottom: 1px solid #e0e0e0; /* Couleur et épaisseur du trait */
+    border-bottom: 1px solid #e0e0e0;  Couleur et épaisseur du trait
 }
-
+*/
 .navbar-nav {
     flex: 1;
     justify-content: flex-start;
