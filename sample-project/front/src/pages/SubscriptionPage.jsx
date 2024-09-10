@@ -70,6 +70,7 @@ const SubscriptionPage = () => {
                     { withCredentials: true }
                 );
                 console.log('Subscription created:', subscriptionCreateResponse.data);
+                alert('Espace de stockage acheté avec succès.');
             } else {
                 const response = await axios.put(
                     'http://localhost:8000/subscription/update',
