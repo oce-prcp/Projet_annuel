@@ -52,7 +52,7 @@ const NavbarComponent = () => {
 
     return (
         <header className="fixed-top" style={{ backgroundColor: navbarColor, transition: 'background-color 0.5s ease' }}>
-            <Navbar expand="lg" style={{ borderBottom: '1px solid #e0e0e0' }}>
+            <Navbar expand="lg">
                 <Container fluid className="d-flex justify-content-between align-items-center">
                     <Navbar.Brand href="/">
                         <img src={logoImage} alt="Logo" style={{ width: '100px' }} />
